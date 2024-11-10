@@ -19,7 +19,6 @@ public class PlatformerPlayer : MonoBehaviour
     private Vector2 groundedPosition;
     private float previousDirection;
     private LadderMovement Ladder;  // Ссылка на LadderMovement
-
     private LandingSound landingSound;
 
     private Vector2 originalColliderSize;
@@ -58,6 +57,12 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);
             return;
         }
+        if (!Ladder.isClimbing && !Ladder.isTopDetectorActive)
+        {
+            HandleStandUpInput();
+        }
+        
+
         // Оставшийся код для обычного передвижения персонажа
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
@@ -74,7 +79,7 @@ public class PlatformerPlayer : MonoBehaviour
         wasGrounded = grounded;
 
         // Приседания
-        if (grounded && (Input.GetKey(KeyCode.DownArrow) && !Ladder.isClimbing && !Ladder.isBottomDetectorActive))
+        if (grounded && (Input.GetKey(KeyCode.DownArrow) && !Ladder.isClimbing && !Ladder.isBottomDetectorActive) && !Input.GetKey(KeyCode.UpArrow))
         {
             body.velocity = new Vector2(0, body.velocity.y);
             Crouch();
@@ -149,9 +154,16 @@ public class PlatformerPlayer : MonoBehaviour
         }
     }
 
+    void HandleStandUpInput()
+    {
+        if (isCrouching && Input.GetKey(KeyCode.UpArrow))
+        {
+            StandUp();
+        }
+    }
     void Crouch()
     {
-        if (isCrouching) return;
+        if (isCrouching || isStandingUp || Input.GetKey(KeyCode.UpArrow)) return;
 
         isCrouching = true;
         anim.SetBool("IsCrouching", true);
@@ -160,26 +172,25 @@ public class PlatformerPlayer : MonoBehaviour
         box.size = new Vector2(originalColliderSize.x, crouchHeight);
         box.offset = new Vector2(originalColliderOffset.x, originalColliderOffset.y - (originalColliderSize.y - crouchHeight) / 2);
     }
-
     void StandUp()
     {
-        if (!isCrouching) return;
-        isStandingUp = true;
+        if (!isCrouching || isStandingUp) return;
+
         isCrouching = false;
-        anim.SetTrigger("StandUpTrigger");
-    }
-
-    public void OnStandUpStart()
-    {
         isStandingUp = true;
+        anim.SetTrigger("StandUpTrigger");
+
+        // Опционально: Используйте корутину для добавления задержки, чтобы предотвратить повторное срабатывание
+        StartCoroutine(ResetStandingStateAfterDelay());
     }
 
-    public void OnStandUpEnd()
+    IEnumerator ResetStandingStateAfterDelay()
     {
-        isStandingUp = false;
-
+        
+        yield return new WaitForSeconds(0.2f); // Настройте длительность при необходимости
         box.size = originalColliderSize;
         box.offset = originalColliderOffset;
+        isStandingUp = false;
         anim.SetBool("IsCrouching", false);
     }
 
