@@ -1,0 +1,1077 @@
+fileFormatVersion: 2
+guid: e9b0671b4886351419679eb5ad6fc48a
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08c2e6ffb1777804da7d79ea463b897a
+      internalID: 211027502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97d0dd11c2d07ac4eacc4a72083881ea
+      internalID: -72026337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_2
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38b64676f1807d142914700a2d49e9f8
+      internalID: -1776612592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_3
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4331c04f2babd24791f288f5033ce78
+      internalID: 6952323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1776a4b9b9f2bd47806afaa22591dc8
+      internalID: 210719555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_5
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9ce23da859a20243ab55bdbff40f235
+      internalID: -1864645245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_6
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bf658c7a146f5b41ae0e7daed93d4b4
+      internalID: -107601326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_7
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0336bd94b1f4df45a8ee1e0f9852492
+      internalID: 2043032748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_8
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5c464618010cea48b146694630d4c23
+      internalID: -586208201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 078dbfed90c12f04d8f95e771b1401e7
+      internalID: 158846201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_10
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f32b197d50dad7469781824d74fa264
+      internalID: -344918358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_11
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 630
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2436688c1265ad64c86c4b0cf09ff800
+      internalID: 2047735576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_12
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 558
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df37e328b5a881744a85cc11643503ba
+      internalID: 1450578400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_22
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 560
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df2a547df38261f46ba1130f25c441c8
+      internalID: 1263202794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_23
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 560
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8be70c257b1eecf46b27a258024e6a08
+      internalID: -1697824079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_34
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 490
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2027a07fe08e5b640989b0e779bb90fc
+      internalID: 363898387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_35
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 490
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a9a637578b753f428aacd2692a0accc
+      internalID: 1828494454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_13
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 401
+        width: 24
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1eff172f7c69a1459356ca621bf07da
+      internalID: 1590784566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_14
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 401
+        width: 25
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e20e6867d35c4cb4ea82184f3604c4e0
+      internalID: -845434495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_15
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 401
+        width: 24
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e120db0237b4c39429341c634b1c9993
+      internalID: 1793376422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_16
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 401
+        width: 25
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96f01e59a6eddc14eaa88399c4fdb39c
+      internalID: -433111175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_17
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 401
+        width: 26
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dffa3421eba54f4bb03c76795f1b2cd
+      internalID: 1216967828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_18
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 403
+        width: 26
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5775, y: 0.922}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1aefa48ab9f5270418b0bc332e4274fe
+      internalID: -2144701689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_19
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 403
+        width: 24
+        height: 63
+      alignment: 9
+      pivot: {x: 0.5835, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49052cb73b323fa42a7a57089e368b43
+      internalID: 1578259733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_20
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 403
+        width: 24
+        height: 63
+      alignment: 9
+      pivot: {x: 0.5835, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 391efe31948787548b13a1a6593b3f83
+      internalID: 713581020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_21
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 403
+        width: 25
+        height: 63
+      alignment: 9
+      pivot: {x: 0.6005, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c41712e8146ca049b42030538ca02db
+      internalID: -187959731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_24
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 403
+        width: 32
+        height: 62
+      alignment: 9
+      pivot: {x: 0.625, y: 0.9515}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e330368ec10ddc74ebb25ee1712dcd7a
+      internalID: 1493153936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_25
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 403
+        width: 35
+        height: 64
+      alignment: 9
+      pivot: {x: 0.686, y: 0.844}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1342b5b148c8c3247beba278cf49c45a
+      internalID: 38076830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_26
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 410
+        width: 36
+        height: 64
+      alignment: 9
+      pivot: {x: 0.6948, y: 0.547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c4a1d3e0b83be049b021c62739c4e20
+      internalID: -1261865721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_27
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 403
+        width: 36
+        height: 60
+      alignment: 9
+      pivot: {x: 0.8335, y: 0.5825}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92a288b7713d66e42bf0df97280f0937
+      internalID: -1658809823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_28
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 323
+        width: 36
+        height: 60
+      alignment: 9
+      pivot: {x: 0.2725, y: 0.5825}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36500c2d62e267d408fb2066328ad3d4
+      internalID: 19289665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_29
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 330
+        width: 36
+        height: 64
+      alignment: 9
+      pivot: {x: 0.4165, y: 0.547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a400e11660276c4e915492161e907c9
+      internalID: 968747819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_30
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 323
+        width: 35
+        height: 64
+      alignment: 9
+      pivot: {x: 0.43, y: 0.844}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dafb0daff3391d4f842cb10c44465e2
+      internalID: 1467814124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_31
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 323
+        width: 32
+        height: 62
+      alignment: 9
+      pivot: {x: 0.5, y: 0.9515}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c867d8431fd9f624ca38d7d0b6f8ae25
+      internalID: -1767800814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_32
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 323
+        width: 26
+        height: 64
+      alignment: 9
+      pivot: {x: 0.577, y: 0.922}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41f55819199f2c748a98942d55765d79
+      internalID: 1813060685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_33
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 323
+        width: 25
+        height: 63
+      alignment: 9
+      pivot: {x: 0.56, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f01790571578444c8d4cba5aa9ce50e
+      internalID: -1015947386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_36
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 323
+        width: 24
+        height: 63
+      alignment: 9
+      pivot: {x: 0.584, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efaf5e91b13acab4383ee4eff6646825
+      internalID: 376281205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_37
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 323
+        width: 24
+        height: 63
+      alignment: 9
+      pivot: {x: 0.584, y: 0.936}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4acec57c2a36603438584bd23dac66c5
+      internalID: -1411025027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_38
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 558
+        width: 42
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d26f8a2fa55ca694ca5be6214b64014c
+      internalID: -122850399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_39
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 558
+        width: 44
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f943fe5987b4fe641a18e996c9216432
+      internalID: 600807168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      GENERALfmspriterev5_0: 211027502
+      GENERALfmspriterev5_1: -72026337
+      GENERALfmspriterev5_10: -344918358
+      GENERALfmspriterev5_11: 2047735576
+      GENERALfmspriterev5_12: 1450578400
+      GENERALfmspriterev5_13: 1590784566
+      GENERALfmspriterev5_14: -845434495
+      GENERALfmspriterev5_15: 1793376422
+      GENERALfmspriterev5_16: -433111175
+      GENERALfmspriterev5_17: 1216967828
+      GENERALfmspriterev5_18: -2144701689
+      GENERALfmspriterev5_19: 1578259733
+      GENERALfmspriterev5_2: -1776612592
+      GENERALfmspriterev5_20: 713581020
+      GENERALfmspriterev5_21: -187959731
+      GENERALfmspriterev5_22: 1263202794
+      GENERALfmspriterev5_23: -1697824079
+      GENERALfmspriterev5_24: 1493153936
+      GENERALfmspriterev5_25: 38076830
+      GENERALfmspriterev5_26: -1261865721
+      GENERALfmspriterev5_27: -1658809823
+      GENERALfmspriterev5_28: 19289665
+      GENERALfmspriterev5_29: 968747819
+      GENERALfmspriterev5_3: 6952323
+      GENERALfmspriterev5_30: 1467814124
+      GENERALfmspriterev5_31: -1767800814
+      GENERALfmspriterev5_32: 1813060685
+      GENERALfmspriterev5_33: -1015947386
+      GENERALfmspriterev5_34: 363898387
+      GENERALfmspriterev5_35: 1828494454
+      GENERALfmspriterev5_36: 376281205
+      GENERALfmspriterev5_37: -1411025027
+      GENERALfmspriterev5_38: -122850399
+      GENERALfmspriterev5_39: 600807168
+      GENERALfmspriterev5_4: 210719555
+      GENERALfmspriterev5_40: 1731809067
+      GENERALfmspriterev5_41: -870027288
+      GENERALfmspriterev5_42: 227045870
+      GENERALfmspriterev5_43: -1263134119
+      GENERALfmspriterev5_44: -1147664263
+      GENERALfmspriterev5_45: 917494481
+      GENERALfmspriterev5_46: -735979394
+      GENERALfmspriterev5_47: -1976367391
+      GENERALfmspriterev5_48: -1773476041
+      GENERALfmspriterev5_49: -513179785
+      GENERALfmspriterev5_5: -1864645245
+      GENERALfmspriterev5_50: 1251513095
+      GENERALfmspriterev5_51: 1187336598
+      GENERALfmspriterev5_52: 747795118
+      GENERALfmspriterev5_53: -1026427739
+      GENERALfmspriterev5_54: -196506443
+      GENERALfmspriterev5_55: 1096855324
+      GENERALfmspriterev5_56: -607321140
+      GENERALfmspriterev5_57: 1004668024
+      GENERALfmspriterev5_58: -1006537581
+      GENERALfmspriterev5_59: 2055040538
+      GENERALfmspriterev5_6: -107601326
+      GENERALfmspriterev5_60: -1333609432
+      GENERALfmspriterev5_61: -2132583300
+      GENERALfmspriterev5_62: 938563873
+      GENERALfmspriterev5_63: 136619182
+      GENERALfmspriterev5_64: 1953312000
+      GENERALfmspriterev5_65: 458205444
+      GENERALfmspriterev5_66: 245397649
+      GENERALfmspriterev5_67: -233158526
+      GENERALfmspriterev5_68: -351224825
+      GENERALfmspriterev5_69: -709457076
+      GENERALfmspriterev5_7: 2043032748
+      GENERALfmspriterev5_70: -816120310
+      GENERALfmspriterev5_71: -1712999449
+      GENERALfmspriterev5_72: 327205591
+      GENERALfmspriterev5_73: 730378701
+      GENERALfmspriterev5_74: -2118404997
+      GENERALfmspriterev5_75: -852574316
+      GENERALfmspriterev5_76: 1262188405
+      GENERALfmspriterev5_77: -1408623527
+      GENERALfmspriterev5_78: 99650765
+      GENERALfmspriterev5_79: -862862721
+      GENERALfmspriterev5_8: -586208201
+      GENERALfmspriterev5_80: 2076750593
+      GENERALfmspriterev5_81: -883209894
+      GENERALfmspriterev5_82: 1090154412
+      GENERALfmspriterev5_83: -1609106740
+      GENERALfmspriterev5_9: 158846201
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

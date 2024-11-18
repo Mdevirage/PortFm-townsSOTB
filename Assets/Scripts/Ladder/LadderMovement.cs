@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using System.Collections;
 
 public class LadderMovement : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class LadderMovement : MonoBehaviour
 
     public CinemachineVirtualCamera virtualCamera;
     private CinemachineFramingTransposer framingTransposer;
-
+    public GameObject tilemapToDisable;
     private int playerLayer;
     private int climbingPlayerLayer;
     private int groundLayer;
@@ -44,13 +45,23 @@ public class LadderMovement : MonoBehaviour
             {
                 framingTransposer.m_ScreenY = 0.806f;
                 framingTransposer.m_SoftZoneHeight = 0f;
-            }
-            
-            float verticalInput = Input.GetAxis("Vertical");
-            body.velocity = new Vector2(0, verticalInput * climbSpeed);
 
-            if (verticalInput == 0)
-                body.velocity = Vector2.zero;
+            }
+
+            float verticalInput = Input.GetAxis("Vertical");
+
+            if (isClimbing)
+            {
+
+                // Устанавливаем параметр ClimbSpeed для управления анимацией
+                anim.SetFloat("ClimbSpeed", verticalInput);
+
+                // Обновляем скорость перемещения персонажа
+                body.velocity = new Vector2(0, verticalInput * climbSpeed);
+
+                if (verticalInput == 0)
+                    body.velocity = Vector2.zero; // Остановка персонажа при отсутствии ввода
+            }
 
             if ((!isTopDetectorActive && isBottomDetectorActive && Input.GetKey(KeyCode.UpArrow))
                 || (isTopDetectorActive && !isBottomDetectorActive && Input.GetKey(KeyCode.DownArrow))
@@ -61,17 +72,18 @@ public class LadderMovement : MonoBehaviour
         }
         else
         {
-            if (body.velocity.y == 0 && isTopDetectorActive && Input.GetKey(KeyCode.UpArrow) && Input.GetAxis("Vertical") != 0)
+            if (body.velocity.y == 0 && isTopDetectorActive && (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow)) && Input.GetAxis("Vertical") != 0)
             {
                 StartClimbing(true); // Начинаем подъем
             }
-            else if (body.velocity.y == 0 && isBottomDetectorActive && Input.GetKey(KeyCode.DownArrow) && Input.GetAxis("Vertical") != 0)
+            else if (body.velocity.y == 0 && isBottomDetectorActive && (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) && Input.GetAxis("Vertical") != 0)
             {
                 StartClimbing(false); // Начинаем спуск
             }
         }
     }
-
+    float horizontalposition;
+    float direction;
     public void StartClimbing(bool isClimbingUp)
     {
         isClimbing = true;
@@ -81,29 +93,46 @@ public class LadderMovement : MonoBehaviour
         // Игнорируем коллизии между ClimbingPlayer и Ground
         Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, true);
 
-        
+
         body.gravityScale = 0;
         body.velocity = Vector2.zero;
 
+        // Находим центр ближайшей лестницы и определяем направление подхода
+        BoxCollider2D closestLadder = FindClosestLadder();
+        Vector2 ladderCenter = closestLadder.bounds.center;
         // Запускаем анимацию подъема или спуска
         if (isClimbingUp)
         {
-            anim.SetTrigger("StartClimbUp");
+            if (closestLadder != null)
+            {
+                horizontalposition = ladderCenter.x;
+                anim.SetTrigger("StartClimbUp"); // Анимация для подъема
+                transform.position = new Vector2(ladderCenter.x, transform.position.y);
+            }
         }
         else
         {
-            anim.SetTrigger("StartClimbDown");
-        }
+            if (closestLadder != null)
+            {
 
+                horizontalposition = ladderCenter.x;
+                direction = transform.position.x - ladderCenter.x; // Положительное - персонаж справа, отрицательное - слева
+                if (direction > 0)
+                {
+                    // Персонаж подходит справа, выбираем анимацию спуска справа
+                    anim.SetTrigger("StartClimbDownRight");
+                }
+                else
+                {
+                    // Персонаж подходит слева, выбираем анимацию спуска слева
+                    anim.SetTrigger("StartClimbDownLeft");
+                }
+
+                // Выравниваем персонажа по центру лестницы (универсально для обоих случаев)
+                transform.position = new Vector2(ladderCenter.x, transform.position.y);
+            }
+        }
         anim.SetBool("IsClimbing", true);
-
-        // Находим центр ближайшей лестницы и выравниваем персонажа
-        BoxCollider2D closestLadder = FindClosestLadder();
-        if (closestLadder != null)
-        {
-            Vector2 ladderCenter = closestLadder.bounds.center;
-            transform.position = new Vector2(ladderCenter.x, transform.position.y);
-        }
     }
 
     public void StopClimbing()
@@ -115,8 +144,6 @@ public class LadderMovement : MonoBehaviour
         // Восстанавливаем коллизии между ClimbingPlayer и Ground
         Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
 
-        framingTransposer.m_ScreenY = 0.5682f;
-        framingTransposer.m_SoftZoneHeight = 0.5f;
         body.gravityScale = 1;
 
         // Определяем направление выхода
@@ -130,6 +157,17 @@ public class LadderMovement : MonoBehaviour
         }
 
         anim.SetBool("IsClimbing", false);
+    }
+
+    public void OnStartClimbDownAnimationComplete()
+    {
+        CameraM = true;
+        transform.position = new Vector2(horizontalposition, transform.position.y-1.8f);
+    }
+    public void OnStartClimbUpAnimationComplete()
+    {
+        CameraM = true;
+        transform.position = new Vector2(horizontalposition, transform.position.y);
     }
 
     public void OnExitClimbComplete()
@@ -148,27 +186,73 @@ public class LadderMovement : MonoBehaviour
         isClimbing = false;
         isExitingClimb = false;
         CameraM = false;  // Сбросим флаг движения камеры, если требуется
+        framingTransposer.m_ScreenY = 0.5682f;
+        framingTransposer.m_SoftZoneHeight = 0.5f;
     }
+    // Метод для поиска ближайшей лестницы
     // Метод для поиска ближайшей лестницы
     private BoxCollider2D FindClosestLadder()
     {
-        BoxCollider2D[] ladders = FindObjectsOfType<BoxCollider2D>();
+        // Размеры прямоугольника поиска (ширина и высота)
+        Vector2 boxSize = new Vector2(1.0f, 3.0f);
+
+        // Смещение прямоугольника относительно позиции персонажа
+        Vector2 boxOffset = new Vector2(0f, -1.75f);
+
+        // Позиция центра прямоугольника
+        Vector2 boxCenter = (Vector2)transform.position + boxOffset;
+
+        // Найти все коллайдеры в области прямоугольника
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0f);
         BoxCollider2D closestLadder = null;
         float closestDistance = Mathf.Infinity;
 
-        foreach (var ladder in ladders)
+        foreach (var collider in colliders)
         {
-            if (ladder.CompareTag("Ladder")) // Убедимся, что это объект с тегом "Ladder"
+            // Проверяем, является ли объект лестницей
+            if (collider.CompareTag("Ladder") && collider is BoxCollider2D boxCollider)
             {
-                float distance = Vector2.Distance(transform.position, ladder.bounds.center);
+                float distance = Vector2.Distance(transform.position, boxCollider.bounds.center);
                 if (distance < closestDistance)
                 {
-                    closestLadder = ladder;
+                    closestLadder = boxCollider;
                     closestDistance = distance;
                 }
             }
         }
 
         return closestLadder;
+    }
+
+
+    public void DisableTilemap()
+    {
+        if (tilemapToDisable != null)
+        {
+            tilemapToDisable.SetActive(false);
+            Debug.Log($"Tilemap {tilemapToDisable.name} отключен.");
+        }
+        else
+        {
+            Debug.LogWarning("Tilemap для отключения не назначен.");
+        }
+    }
+
+    public void EnableTilemap()
+    {
+        if (tilemapToDisable != null)
+        {
+            tilemapToDisable.SetActive(true);
+            Debug.Log($"Tilemap {tilemapToDisable.name} включен.");
+        }
+        else
+        {
+            Debug.LogWarning("Tilemap для включения не назначен.");
+        }
+    }
+
+    public void ClimbDownMovement(float offset)
+    {
+        transform.position = new Vector2(horizontalposition, transform.position.y + offset);
     }
 }

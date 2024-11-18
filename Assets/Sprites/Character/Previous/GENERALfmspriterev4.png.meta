@@ -601,12 +601,12 @@ TextureImporter:
       name: GENERALfmspriterev4_18
       rect:
         serializedVersion: 2
-        x: 6
+        x: 5
         y: 439
-        width: 35
-        height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 36
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5835, y: 0.547}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -625,9 +625,9 @@ TextureImporter:
         x: 49
         y: 432
         width: 35
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 9
+      pivot: {x: 0.57, y: 0.844}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -644,11 +644,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 85
-        y: 432
-        width: 34
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 433
+        width: 32
+        height: 62
+      alignment: 9
+      pivot: {x: 0.5, y: 0.92}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -686,9 +686,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 267
-        y: 497
+        y: 496
         width: 25
-        height: 63
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -707,9 +707,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 300
-        y: 497
+        y: 496
         width: 24
-        height: 63
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -728,9 +728,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 334
-        y: 497
+        y: 496
         width: 25
-        height: 63
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -773,8 +773,8 @@ TextureImporter:
         y: 433
         width: 24
         height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.416, y: 0.905}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -790,12 +790,12 @@ TextureImporter:
       name: GENERALfmspriterev4_29
       rect:
         serializedVersion: 2
-        x: 425
+        x: 424
         y: 497
         width: 36
         height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.7275, y: 0.5825}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -815,8 +815,8 @@ TextureImporter:
         y: 433
         width: 26
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.423, y: 0.89}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -836,8 +836,8 @@ TextureImporter:
         y: 434
         width: 25
         height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.44, y: 0.905}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -857,8 +857,8 @@ TextureImporter:
         y: 434
         width: 24
         height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.417, y: 0.905}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
