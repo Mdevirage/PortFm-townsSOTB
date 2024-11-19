@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using System.Collections;
+using Unity.Mathematics;
 
 public class LadderMovement : MonoBehaviour
 {
@@ -59,8 +60,11 @@ public class LadderMovement : MonoBehaviour
                 // Обновляем скорость перемещения персонажа
                 body.velocity = new Vector2(0, verticalInput * climbSpeed);
 
-                if (verticalInput == 0)
+                if (math.abs(verticalInput) <= 0.5)
+                {
                     body.velocity = Vector2.zero; // Остановка персонажа при отсутствии ввода
+                    anim.SetFloat("ClimbSpeed",0);
+                }
             }
 
             if ((!isTopDetectorActive && isBottomDetectorActive && Input.GetKey(KeyCode.UpArrow))
@@ -160,9 +164,11 @@ public class LadderMovement : MonoBehaviour
     }
 
     public void OnStartClimbDownAnimationComplete()
-    {
-        CameraM = true;
+    {   
         transform.position = new Vector2(horizontalposition, transform.position.y-1.8f);
+        framingTransposer.m_TrackedObjectOffset.y = -2.22f;
+        framingTransposer.m_ScreenY = 0.806f;
+        framingTransposer.m_SoftZoneHeight = 0f;
     }
     public void OnStartClimbUpAnimationComplete()
     {
@@ -175,10 +181,15 @@ public class LadderMovement : MonoBehaviour
         // Вызывается по завершении анимации выхода (через событие анимации)
         isExitingClimb = false;
     }
-    public void CamMove()
+    public void CamMoveD()
     {
-        // Вызывается по завершении анимации выхода (через событие анимации)
-        CameraM = true;
+
+        StartCoroutine(SmoothTrackedObjectOffset(new Vector2(0, -4.02f), 0.6f));
+    }
+    public void CamMoveU()
+    {
+        framingTransposer.m_SoftZoneHeight = 0.3f;
+        StartCoroutine(SmoothCameraShift(new Vector2(0, 0.02f), 1f));
     }
     public void OnExitClimbAnimationComplete()
     {
@@ -186,10 +197,19 @@ public class LadderMovement : MonoBehaviour
         isClimbing = false;
         isExitingClimb = false;
         CameraM = false;  // Сбросим флаг движения камеры, если требуется
-        framingTransposer.m_ScreenY = 0.5682f;
+        framingTransposer.m_ScreenY = 0.578f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
     }
-    // Метод для поиска ближайшей лестницы
+    public void OnExitClimbDownAnimationComplete()
+    {
+        // Этот метод вызывается анимацией после её завершения
+        isClimbing = false;
+        isExitingClimb = false;
+        CameraM = false;  // Сбросим флаг движения камеры, если требуется
+        framingTransposer.m_ScreenY = 0.578f;
+        framingTransposer.m_SoftZoneHeight = 0.5f;
+        framingTransposer.m_TrackedObjectOffset.y = -2.22f;
+    }
     // Метод для поиска ближайшей лестницы
     private BoxCollider2D FindClosestLadder()
     {
@@ -223,8 +243,22 @@ public class LadderMovement : MonoBehaviour
 
         return closestLadder;
     }
+    private IEnumerator SmoothTrackedObjectOffset(Vector2 targetOffset, float duration)
+    {
+        Vector2 initialOffset = framingTransposer.m_TrackedObjectOffset; // Текущее смещение
+        float elapsedTime = 0f;
 
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            // Плавное изменение Tracked Object Offset
+            framingTransposer.m_TrackedObjectOffset = Vector2.Lerp(initialOffset, targetOffset, elapsedTime / duration);
+            yield return null;
+        }
 
+        // Устанавливаем финальное значение
+        framingTransposer.m_TrackedObjectOffset = targetOffset;
+    }
     public void DisableTilemap()
     {
         if (tilemapToDisable != null)
@@ -237,7 +271,23 @@ public class LadderMovement : MonoBehaviour
             Debug.LogWarning("Tilemap для отключения не назначен.");
         }
     }
+    private IEnumerator SmoothCameraShift(Vector2 targetOffset, float duration)
+    {
+        Vector2 initialOffset = framingTransposer.m_TrackedObjectOffset; // Текущее смещение
+        float elapsedTime = 0f;
 
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Линейная интерполяция между текущим и целевым смещением
+            framingTransposer.m_TrackedObjectOffset = Vector2.Lerp(initialOffset, targetOffset, elapsedTime / duration);
+            yield return null;
+        }
+
+        // Устанавливаем финальное значение
+        framingTransposer.m_TrackedObjectOffset = targetOffset;
+    }
     public void EnableTilemap()
     {
         if (tilemapToDisable != null)

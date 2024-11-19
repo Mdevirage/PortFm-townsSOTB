@@ -98,8 +98,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1
-    functionName: OnStartClimbDownAnimationComplete
+  - time: 0.375
+    functionName: CamMoveD
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -107,6 +107,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1
     functionName: OnExitClimbComplete
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: OnStartClimbDownAnimationComplete
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
