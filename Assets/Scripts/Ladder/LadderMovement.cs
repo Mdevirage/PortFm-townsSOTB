@@ -2,13 +2,13 @@ using Cinemachine;
 using UnityEngine;
 using System.Collections;
 using Unity.Mathematics;
+using TMPro;
 
 public class LadderMovement : MonoBehaviour
 {
     public float climbSpeed = 3.0f;
     public bool isClimbing = false;
     private bool isExitingClimb = false; // Флаг для блокировки движения при анимации выхода
-    private bool CameraM = false;
 
     private Rigidbody2D body;
     private Animator anim;
@@ -16,20 +16,20 @@ public class LadderMovement : MonoBehaviour
     public bool isTopDetectorActive = false;
     public bool isBottomDetectorActive = false;
     public bool isOverlapLadderActive = false;
-
+    public bool isGroundActive = false;
     public CinemachineVirtualCamera virtualCamera;
-    private CinemachineFramingTransposer framingTransposer;
     public GameObject tilemapToDisable;
+    public GameObject SmoothObject;
     private int playerLayer;
     private int climbingPlayerLayer;
     private int groundLayer;
-
+    private CinemachineFramingTransposer framingTransposer;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-
+        //cameraManager = FindObjectOfType<CameraManager>();
         playerLayer = LayerMask.NameToLayer("Player");
         climbingPlayerLayer = LayerMask.NameToLayer("ClimbingPlayer");
         groundLayer = LayerMask.NameToLayer("groundLayer");
@@ -42,12 +42,6 @@ public class LadderMovement : MonoBehaviour
             if (isExitingClimb)
                 return; // Блокируем управление при выходе
 
-            if (CameraM)
-            {
-                framingTransposer.m_ScreenY = 0.806f;
-                framingTransposer.m_SoftZoneHeight = 0f;
-
-            }
 
             float verticalInput = Input.GetAxis("Vertical");
 
@@ -88,8 +82,10 @@ public class LadderMovement : MonoBehaviour
     }
     float horizontalposition;
     float direction;
+    float previousPositionX;
     public void StartClimbing(bool isClimbingUp)
     {
+        virtualCamera.Follow = null;
         isClimbing = true;
         isExitingClimb = true; // Снимаем флаг выхода
         gameObject.layer = climbingPlayerLayer;
@@ -97,19 +93,29 @@ public class LadderMovement : MonoBehaviour
         // Игнорируем коллизии между ClimbingPlayer и Ground
         Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, true);
 
-
-        body.gravityScale = 0;
-        body.velocity = Vector2.zero;
-
-        // Находим центр ближайшей лестницы и определяем направление подхода
         BoxCollider2D closestLadder = FindClosestLadder();
         Vector2 ladderCenter = closestLadder.bounds.center;
+        float ladderX = ladderCenter.x;
+        body.gravityScale = 0;
+        body.velocity = Vector2.zero;
+        float characterDirection = Mathf.Sign(transform.localScale.x);
+        float approachDirection = Mathf.Sign(transform.position.x - ladderX);
+        previousPositionX = transform.position.x;
+        horizontalposition = ladderCenter.x;
+        direction = transform.position.x - ladderCenter.x;
+        // Если персонаж смотрит в противоположную сторону от лестницы
+        if (characterDirection == approachDirection)
+        {
+            StartTurnAnimation(approachDirection, isClimbingUp); // Запускаем анимацию поворота
+            return; // Ждем завершения поворота, чтобы продолжить
+        }
+        // Находим центр ближайшей лестницы и определяем направление подхода
+        
         // Запускаем анимацию подъема или спуска
         if (isClimbingUp)
         {
             if (closestLadder != null)
             {
-                horizontalposition = ladderCenter.x;
                 anim.SetTrigger("StartClimbUp"); // Анимация для подъема
                 transform.position = new Vector2(ladderCenter.x, transform.position.y);
             }
@@ -117,21 +123,18 @@ public class LadderMovement : MonoBehaviour
         else
         {
             if (closestLadder != null)
-            {
-
-                horizontalposition = ladderCenter.x;
-                direction = transform.position.x - ladderCenter.x; // Положительное - персонаж справа, отрицательное - слева
+            { 
+                Debug.Log($"Direction {direction} and {previousPositionX}");
                 if (direction > 0)
                 {
                     // Персонаж подходит справа, выбираем анимацию спуска справа
                     anim.SetTrigger("StartClimbDownRight");
                 }
-                else
+                if (direction < 0)
                 {
                     // Персонаж подходит слева, выбираем анимацию спуска слева
                     anim.SetTrigger("StartClimbDownLeft");
                 }
-
                 // Выравниваем персонажа по центру лестницы (универсально для обоих случаев)
                 transform.position = new Vector2(ladderCenter.x, transform.position.y);
             }
@@ -143,37 +146,66 @@ public class LadderMovement : MonoBehaviour
     {
         isExitingClimb = true;// Активируем флаг выхода
         Debug.Log("isClimbing False");
-        gameObject.layer = playerLayer;
-
-        // Восстанавливаем коллизии между ClimbingPlayer и Ground
-        Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
-
-        body.gravityScale = 1;
-
+        if (isTopDetectorActive && isGroundActive && !isBottomDetectorActive)
+        {
+            Debug.Log("Лестница обрывается - персонаж начинает падать");
+            ExitToFallingState();
+            return;
+        }
         // Определяем направление выхода
         if (isTopDetectorActive)
         {
             anim.SetTrigger("ExitClimbUp");
+            gameObject.layer = playerLayer;
+
+            // Восстанавливаем коллизии между ClimbingPlayer и Ground
+            Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
+
+            body.gravityScale = 1;
+
         }
         else if (isBottomDetectorActive)
         {
-            anim.SetTrigger("ExitClimbDown");
+            if (math.sign(direction) > 0)
+            {
+                anim.SetTrigger("ExitClimbDownR");
+                transform.position = new Vector2(transform.position.x, transform.position.y + 1.68f);
+                gameObject.layer = playerLayer;
+
+                // Восстанавливаем коллизии между ClimbingPlayer и Ground
+                Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
+
+                body.gravityScale = 1;
+            }
+            else if (math.sign(direction) < 0)
+            {
+                anim.SetTrigger("ExitClimbDownL");
+                transform.position = new Vector2(transform.position.x, transform.position.y + 1.68f);
+                gameObject.layer = playerLayer;
+                // Восстанавливаем коллизии между ClimbingPlayer и Ground
+                Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
+
+                body.gravityScale = 1;
+            }
+
         }
 
-        anim.SetBool("IsClimbing", false);
+            anim.SetBool("IsClimbing", false);
     }
 
     public void OnStartClimbDownAnimationComplete()
-    {   
-        transform.position = new Vector2(horizontalposition, transform.position.y-1.8f);
-        framingTransposer.m_TrackedObjectOffset.y = -2.22f;
-        framingTransposer.m_ScreenY = 0.806f;
-        framingTransposer.m_SoftZoneHeight = 0f;
+    {
+        transform.position = new Vector2(horizontalposition, transform.position.y - 1.7f);
+        framingTransposer.m_ScreenY = 0.8155f;
+        framingTransposer.m_SoftZoneHeight = 0.01f;
+        SmoothObject.transform.SetParent(transform);
     }
     public void OnStartClimbUpAnimationComplete()
     {
-        CameraM = true;
         transform.position = new Vector2(horizontalposition, transform.position.y);
+        framingTransposer.m_ScreenY = 0.8155f;
+        framingTransposer.m_SoftZoneHeight = 0.01f;
+        SmoothObject.transform.SetParent(transform);
     }
 
     public void OnExitClimbComplete()
@@ -181,34 +213,30 @@ public class LadderMovement : MonoBehaviour
         // Вызывается по завершении анимации выхода (через событие анимации)
         isExitingClimb = false;
     }
-    public void CamMoveD()
-    {
-
-        StartCoroutine(SmoothTrackedObjectOffset(new Vector2(0, -4.02f), 0.6f));
-    }
-    public void CamMoveU()
-    {
-        framingTransposer.m_SoftZoneHeight = 0.3f;
-        StartCoroutine(SmoothCameraShift(new Vector2(0, 0.02f), 1f));
-    }
+    
     public void OnExitClimbAnimationComplete()
     {
         // Этот метод вызывается анимацией после её завершения
+        transform.position = new Vector2(previousPositionX, transform.position.y);
         isClimbing = false;
         isExitingClimb = false;
-        CameraM = false;  // Сбросим флаг движения камеры, если требуется
-        framingTransposer.m_ScreenY = 0.578f;
+        
+        SmoothObject.transform.SetParent(null);
+        framingTransposer.m_ScreenY = 0.5773f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
+        virtualCamera.Follow = transform;
     }
+    
     public void OnExitClimbDownAnimationComplete()
     {
         // Этот метод вызывается анимацией после её завершения
         isClimbing = false;
         isExitingClimb = false;
-        CameraM = false;  // Сбросим флаг движения камеры, если требуется
-        framingTransposer.m_ScreenY = 0.578f;
+        transform.position = new Vector2(previousPositionX, transform.position.y);
+        framingTransposer.m_ScreenY = 0.5773f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
-        framingTransposer.m_TrackedObjectOffset.y = -2.22f;
+        SmoothObject.transform.SetParent(null);
+        virtualCamera.Follow = transform;
     }
     // Метод для поиска ближайшей лестницы
     private BoxCollider2D FindClosestLadder()
@@ -243,21 +271,46 @@ public class LadderMovement : MonoBehaviour
 
         return closestLadder;
     }
-    private IEnumerator SmoothTrackedObjectOffset(Vector2 targetOffset, float duration)
+    
+    private void ExitToFallingState()
     {
-        Vector2 initialOffset = framingTransposer.m_TrackedObjectOffset; // Текущее смещение
-        float elapsedTime = 0f;
+        isClimbing = false;
 
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            // Плавное изменение Tracked Object Offset
-            framingTransposer.m_TrackedObjectOffset = Vector2.Lerp(initialOffset, targetOffset, elapsedTime / duration);
-            yield return null;
-        }
+        anim.SetTrigger("IsJumping");
 
-        // Устанавливаем финальное значение
-        framingTransposer.m_TrackedObjectOffset = targetOffset;
+        // Сбрасываем коллизии и включаем гравитацию
+        gameObject.layer = playerLayer;
+        Physics2D.IgnoreLayerCollision(climbingPlayerLayer, groundLayer, false);
+        body.gravityScale = 1;
+        SmoothObject.transform.SetParent(null);
+        framingTransposer.m_ScreenY = 0.5773f;
+        framingTransposer.m_SoftZoneHeight = 0.5f;
+        transform.position = new Vector3(previousPositionX,transform.position.y);
+        virtualCamera.Follow = transform;
+        Debug.Log("Переход в состояние падения");
+    }
+    public void CameraClimbDown()
+    {
+        SmoothObject.transform.position = new Vector2(previousPositionX, transform.position.y);
+        virtualCamera.Follow = SmoothObject.transform;
+        Vector3 targetPosition = new Vector3(previousPositionX, transform.position.y - 1.7f, transform.position.z);
+        MoveToPosition(targetPosition, 0.8f);
+    }
+    public void CameraClimbUp()
+    {
+        SmoothObject.transform.position = new Vector2(previousPositionX, transform.position.y);
+        virtualCamera.Follow = SmoothObject.transform;
+    }
+    public void CameraClimbDownRev()
+    {
+        framingTransposer.m_ScreenY = 0.76f;
+        framingTransposer.m_SoftZoneHeight = 0.15f;
+        float adjustedY = Mathf.Round(SmoothObject.transform.position.y + 1.9f);
+        float offset = 0.083f;
+        Vector3 targetPosition = new Vector3(previousPositionX, adjustedY-offset, transform.position.z);
+        //Vector3 targetPosition = new Vector3(previousPositionX, SmoothObject.transform.position.y + 1.9f, transform.position.z);
+        MoveToPosition(targetPosition, 0.8f);
+        
     }
     public void DisableTilemap()
     {
@@ -271,23 +324,7 @@ public class LadderMovement : MonoBehaviour
             Debug.LogWarning("Tilemap для отключения не назначен.");
         }
     }
-    private IEnumerator SmoothCameraShift(Vector2 targetOffset, float duration)
-    {
-        Vector2 initialOffset = framingTransposer.m_TrackedObjectOffset; // Текущее смещение
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-
-            // Линейная интерполяция между текущим и целевым смещением
-            framingTransposer.m_TrackedObjectOffset = Vector2.Lerp(initialOffset, targetOffset, elapsedTime / duration);
-            yield return null;
-        }
-
-        // Устанавливаем финальное значение
-        framingTransposer.m_TrackedObjectOffset = targetOffset;
-    }
+    
     public void EnableTilemap()
     {
         if (tilemapToDisable != null)
@@ -299,10 +336,67 @@ public class LadderMovement : MonoBehaviour
         {
             Debug.LogWarning("Tilemap для включения не назначен.");
         }
+        
+    }
+    public void StartTurnAnimation(float approachDirection, bool isClimbingUp)
+    {
+        // Поворот персонажа на месте
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+
+        // Запуск анимации поворота, если она есть
+        anim.SetTrigger("Turn");
+
+        // После завершения поворота продолжаем спуск
+        StartCoroutine(WaitForTurnAndClimb(approachDirection,isClimbingUp));
     }
 
-    public void ClimbDownMovement(float offset)
+    private IEnumerator WaitForTurnAndClimb(float approachDirection, bool isClimbingUp)
     {
-        transform.position = new Vector2(horizontalposition, transform.position.y + offset);
+        yield return new WaitForSeconds(0.2f); // Ожидание завершения анимации поворота (регулируйте по длительности вашей анимации)
+
+        previousPositionX = transform.position.x;
+
+        if (isClimbingUp)
+        {
+            // Анимация подъема
+            anim.SetBool("IsClimbing", true);
+            transform.position = new Vector2(horizontalposition, transform.position.y);
+            anim.SetTrigger("StartClimbUp");
+        }
+        else
+        {
+            // Анимация спуска в зависимости от направления
+            if (approachDirection > 0)
+            {
+                anim.SetTrigger("StartClimbDownRight");
+            }
+            if (approachDirection < 0)
+            {
+                // Персонаж подходит слева, выбираем анимацию спуска слева
+                anim.SetTrigger("StartClimbDownLeft");
+            }
+
+            anim.SetBool("IsClimbing", true);
+            transform.position = new Vector2(horizontalposition, transform.position.y);
+            Debug.Log($"ApproachDirection {approachDirection}");
+        }
+    }
+    public void MoveToPosition(Vector3 targetPosition, float duration)
+    {
+        StartCoroutine(SmoothMove(SmoothObject.transform.position, targetPosition, duration));
+    }
+
+    private IEnumerator SmoothMove(Vector3 startPosition, Vector3 endPosition, float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            SmoothObject.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        SmoothObject.transform.position = endPosition; // Убедиться, что объект точно на целевой позиции
     }
 }

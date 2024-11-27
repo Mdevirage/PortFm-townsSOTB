@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,42 +16,44 @@ public class PlatformerPlayer : MonoBehaviour
     private bool isTurning;
     private bool wasGrounded;
     private bool isCrouching = false;
-    private bool isStandingUp = false; // Переменная для блокировки действий во время StandUp
+    private bool isStandingUp = false; // РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ Р±Р»РѕРєРёСЂРѕРІРєРё РґРµР№СЃС‚РІРёР№ РІРѕ РІСЂРµРјСЏ StandUp
     private Vector2 groundedPosition;
     private float previousDirection;
-    private LadderMovement Ladder;  // Ссылка на LadderMovement
+    private LadderMovement Ladder;  // РЎСЃС‹Р»РєР° РЅР° LadderMovement
     private LandingSound landingSound;
-
+    public CinemachineVirtualCamera virtualCamera;
+    private CinemachineFramingTransposer framingTransposer;
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
-
+    private bool isFalling;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        Ladder = GetComponent<LadderMovement>();  // Получаем компонент LadderMovement
+        Ladder = GetComponent<LadderMovement>();  // РџРѕР»СѓС‡Р°РµРј РєРѕРјРїРѕРЅРµРЅС‚ LadderMovement
         previousDirection = transform.localScale.x;
         isTurning = false;
         wasGrounded = true;
         landingSound = GetComponent<LandingSound>();
-
+        framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         originalColliderSize = box.size;
         originalColliderOffset = box.offset;
+        framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
 
     void Update()
     {
 
-        // Если персонаж лазает по лестнице, блокируем управление движением и прыжки
+        // Р•СЃР»Рё РїРµСЂСЃРѕРЅР°Р¶ Р»Р°Р·Р°РµС‚ РїРѕ Р»РµСЃС‚РЅРёС†Рµ, Р±Р»РѕРєРёСЂСѓРµРј СѓРїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёРµРј Рё РїСЂС‹Р¶РєРё
         if (Ladder.isClimbing)
         {
-            body.velocity = Vector2.zero; // Останавливаем движение по земле
-            anim.SetFloat("Speed", 0);    // Устанавливаем скорость анимации в 0
-            return; // Прерываем выполнение Update, если персонаж на лестнице
+            body.velocity = Vector2.zero; // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј РґРІРёР¶РµРЅРёРµ РїРѕ Р·РµРјР»Рµ
+            anim.SetFloat("Speed", 0);    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРєРѕСЂРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё РІ 0
+            return; // РџСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ Update, РµСЃР»Рё РїРµСЂСЃРѕРЅР°Р¶ РЅР° Р»РµСЃС‚РЅРёС†Рµ
         }
 
-        // Если персонаж выполняет StandUp, блокируем все действия
+        // Р•СЃР»Рё РїРµСЂСЃРѕРЅР°Р¶ РІС‹РїРѕР»РЅСЏРµС‚ StandUp, Р±Р»РѕРєРёСЂСѓРµРј РІСЃРµ РґРµР№СЃС‚РІРёСЏ
         if (isStandingUp)
         {
             body.velocity = new Vector2(0, body.velocity.y);
@@ -61,9 +64,8 @@ public class PlatformerPlayer : MonoBehaviour
         {
             HandleStandUpInput();
         }
-        
 
-        // Оставшийся код для обычного передвижения персонажа
+        // РћСЃС‚Р°РІС€РёР№СЃСЏ РєРѕРґ РґР»СЏ РѕР±С‹С‡РЅРѕРіРѕ РїРµСЂРµРґРІРёР¶РµРЅРёСЏ РїРµСЂСЃРѕРЅР°Р¶Р°
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
         RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.1f, groundLayer);
@@ -73,12 +75,21 @@ public class PlatformerPlayer : MonoBehaviour
 
         if (!wasGroundedPreviously && grounded)
         {
-            landingSound.PlayLandingSound();
+            if (isFalling)
+            {
+                landingSound.PlayLandingSound();
+                //framingTransposer.m_ScreenY += 0.01f;
+                isFalling = false;
+            }
+            else
+            {
+                landingSound.PlayLandingSound();
+            }
         }
 
         wasGrounded = grounded;
 
-        // Приседания
+        // РџСЂРёСЃРµРґР°РЅРёСЏ
         if (grounded && (Input.GetKey(KeyCode.DownArrow) && !Ladder.isClimbing && !Ladder.isBottomDetectorActive) && !Input.GetKey(KeyCode.UpArrow))
         {
             body.velocity = new Vector2(0, body.velocity.y);
@@ -93,6 +104,7 @@ public class PlatformerPlayer : MonoBehaviour
 
         float deltaX = Input.GetAxis("Horizontal") * speed;
         Vector2 movement = new Vector2(deltaX, body.velocity.y);
+        
 
         if (grounded)
         {
@@ -101,12 +113,18 @@ public class PlatformerPlayer : MonoBehaviour
         
         if (!grounded && transform.position.y < groundedPosition.y)
         {
+            // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРµ РґРІРёР¶РµРЅРёРµ
             movement.x = 0;
+
+            // РўСЂРёРіРіРµСЂ Р°РЅРёРјР°С†РёРё РїСЂС‹Р¶РєР°
             anim.SetTrigger("IsJumping");
-            body.velocity = new Vector2(0, body.velocity.y);
+            isFalling = true;
+            // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„РёРєСЃРёСЂРѕРІР°РЅРЅСѓСЋ СЃРєРѕСЂРѕСЃС‚СЊ РїР°РґРµРЅРёСЏ
+            float fixedFallSpeed = -15f; // Р¤РёРєСЃРёСЂРѕРІР°РЅРЅР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ РїР°РґРµРЅРёСЏ
+            body.velocity = new Vector2(0, fixedFallSpeed);
         }
 
-        // Повороты и движения
+        // РџРѕРІРѕСЂРѕС‚С‹ Рё РґРІРёР¶РµРЅРёСЏ
         if (!isTurning && grounded)
         {
             bool isTurningNow = (deltaX > 0 && previousDirection < 0) || (deltaX < 0 && previousDirection > 0);
@@ -115,7 +133,6 @@ public class PlatformerPlayer : MonoBehaviour
             {
                 isTurning = true;
                 anim.SetTrigger("Turn");
-                previousDirection = Mathf.Sign(deltaX);
             }
         }
 
@@ -125,14 +142,15 @@ public class PlatformerPlayer : MonoBehaviour
             body.velocity = movement;
         }
 
-        // Прыжок
-        if (grounded && Input.GetKeyDown(KeyCode.Space) && !isCrouching & !Ladder.isClimbing)
+        // РџСЂС‹Р¶РѕРє
+        if (grounded && Input.GetKey(KeyCode.Space) && !isCrouching && !Ladder.isClimbing && !isTurning)
         {
             anim.SetTrigger("IsJumping");
-            body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            body.velocity = new Vector2(body.velocity.x, 0);
+            body.velocity = new Vector2(body.velocity.x, jumpForce);
         }
 
-        // Движение на движущейся платформе
+        // Р”РІРёР¶РµРЅРёРµ РЅР° РґРІРёР¶СѓС‰РµР№СЃСЏ РїР»Р°С‚С„РѕСЂРјРµ
         MovingPlatform platform = null;
         if (grounded && hit.collider != null)
         {
@@ -147,7 +165,7 @@ public class PlatformerPlayer : MonoBehaviour
             transform.parent = null;
         }
 
-        // Обработка поворота на платформе
+        // РћР±СЂР°Р±РѕС‚РєР° РїРѕРІРѕСЂРѕС‚Р° РЅР° РїР»Р°С‚С„РѕСЂРјРµ
         if (grounded && !Mathf.Approximately(deltaX, 0))
         {
             transform.localScale = new Vector3(Mathf.Sign(deltaX), 1, 1);
@@ -180,14 +198,14 @@ public class PlatformerPlayer : MonoBehaviour
         isStandingUp = true;
         anim.SetTrigger("StandUpTrigger");
 
-        // Опционально: Используйте корутину для добавления задержки, чтобы предотвратить повторное срабатывание
+        // РћРїС†РёРѕРЅР°Р»СЊРЅРѕ: РСЃРїРѕР»СЊР·СѓР№С‚Рµ РєРѕСЂСѓС‚РёРЅСѓ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ Р·Р°РґРµСЂР¶РєРё, С‡С‚РѕР±С‹ РїСЂРµРґРѕС‚РІСЂР°С‚РёС‚СЊ РїРѕРІС‚РѕСЂРЅРѕРµ СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРµ
         StartCoroutine(ResetStandingStateAfterDelay());
     }
 
     IEnumerator ResetStandingStateAfterDelay()
     {
         
-        yield return new WaitForSeconds(0.2f); // Настройте длительность при необходимости
+        yield return new WaitForSeconds(0.2f); // РќР°СЃС‚СЂРѕР№С‚Рµ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
         box.size = originalColliderSize;
         box.offset = originalColliderOffset;
         isStandingUp = false;
@@ -197,6 +215,7 @@ public class PlatformerPlayer : MonoBehaviour
     public void EndTurn()
     {
         isTurning = false;
+        previousDirection = transform.localScale.x;
     }
 
     private void OnDrawGizmos()
@@ -206,7 +225,7 @@ public class PlatformerPlayer : MonoBehaviour
         {
             Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
             Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
-            Gizmos.DrawWireCube(boxCenter + Vector2.down * 0.1f / 2, boxSize);
+            Gizmos.DrawWireCube(boxCenter + (Vector2.down * 0.1f / 2), boxSize);
         }
     }
 }
