@@ -1,15 +1,14 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlatformerPlayer : MonoBehaviour
 {
     public float speed = 4.5f;
     public float jumpForce = 12.0f;
     public LayerMask groundLayer;
-
     private BoxCollider2D box;
     private Rigidbody2D body;
     private Animator anim;
@@ -22,10 +21,10 @@ public class PlatformerPlayer : MonoBehaviour
     private LadderMovement Ladder;  // Ссылка на LadderMovement
     private LandingSound landingSound;
     public CinemachineVirtualCamera virtualCamera;
-    private CinemachineFramingTransposer framingTransposer;
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
     private bool isFalling;
+    
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -36,15 +35,12 @@ public class PlatformerPlayer : MonoBehaviour
         isTurning = false;
         wasGrounded = true;
         landingSound = GetComponent<LandingSound>();
-        framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         originalColliderSize = box.size;
         originalColliderOffset = box.offset;
-        framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
 
     void Update()
     {
-
         // Если персонаж лазает по лестнице, блокируем управление движением и прыжки
         if (Ladder.isClimbing)
         {
