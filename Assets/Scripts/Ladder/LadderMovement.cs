@@ -44,7 +44,7 @@ public class LadderMovement : MonoBehaviour
 
 
             float verticalInput = Input.GetAxis("Vertical");
-
+            Debug.Log($"Vertical Input {verticalInput}");
             if (isClimbing)
             {
 
@@ -54,7 +54,7 @@ public class LadderMovement : MonoBehaviour
                 // Обновляем скорость перемещения персонажа
                 body.velocity = new Vector2(0, verticalInput * climbSpeed);
 
-                if (math.abs(verticalInput) <= 0.5)
+                if (math.abs(verticalInput) <= 0.99999)
                 {
                     body.velocity = Vector2.zero; // Остановка персонажа при отсутствии ввода
                     anim.SetFloat("ClimbSpeed",0);
@@ -118,6 +118,7 @@ public class LadderMovement : MonoBehaviour
             {
                 anim.SetTrigger("StartClimbUp"); // Анимация для подъема
                 transform.position = new Vector2(ladderCenter.x, transform.position.y);
+                anim.SetFloat("ClimbSpeed", -1f);
             }
         }
         else
@@ -189,20 +190,20 @@ public class LadderMovement : MonoBehaviour
             }
 
         }
-
             anim.SetBool("IsClimbing", false);
     }
 
     public void OnStartClimbDownAnimationComplete()
     {
-        transform.position = new Vector2(horizontalposition, transform.position.y - 1.7f);
+        transform.position = new Vector2(horizontalposition+0.125f, transform.position.y - 1.68f);
         framingTransposer.m_ScreenY = 0.8155f;
         framingTransposer.m_SoftZoneHeight = 0.01f;
         SmoothObject.transform.SetParent(transform);
+        anim.SetFloat("ClimbSpeed", 0);
     }
     public void OnStartClimbUpAnimationComplete()
     {
-        transform.position = new Vector2(horizontalposition, transform.position.y);
+        transform.position = new Vector2(horizontalposition+0.125f, transform.position.y);
         framingTransposer.m_ScreenY = 0.8155f;
         framingTransposer.m_SoftZoneHeight = 0.01f;
         SmoothObject.transform.SetParent(transform);
@@ -225,6 +226,7 @@ public class LadderMovement : MonoBehaviour
         framingTransposer.m_ScreenY = 0.5773f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
         virtualCamera.Follow = transform;
+        anim.SetFloat("ClimbSpeed", 0);
     }
     
     public void OnExitClimbDownAnimationComplete()
@@ -237,6 +239,7 @@ public class LadderMovement : MonoBehaviour
         framingTransposer.m_SoftZoneHeight = 0.5f;
         SmoothObject.transform.SetParent(null);
         virtualCamera.Follow = transform;
+        anim.SetFloat("ClimbSpeed", 0);
     }
     // Метод для поиска ближайшей лестницы
     private BoxCollider2D FindClosestLadder()
@@ -293,7 +296,7 @@ public class LadderMovement : MonoBehaviour
     {
         SmoothObject.transform.position = new Vector2(previousPositionX, transform.position.y);
         virtualCamera.Follow = SmoothObject.transform;
-        Vector3 targetPosition = new Vector3(previousPositionX, transform.position.y - 1.7f, transform.position.z);
+        Vector3 targetPosition = new Vector3(previousPositionX, transform.position.y - 1.68f, transform.position.z);
         MoveToPosition(targetPosition, 0.8f);
     }
     public void CameraClimbUp()
@@ -303,6 +306,8 @@ public class LadderMovement : MonoBehaviour
     }
     public void CameraClimbDownRev()
     {
+        SmoothObject.transform.position = new Vector2(SmoothObject.transform.position.x + 0.125f, transform.position.y);
+        transform.position = new Vector2(horizontalposition, transform.position.y);
         framingTransposer.m_ScreenY = 0.76f;
         framingTransposer.m_SoftZoneHeight = 0.15f;
         float adjustedY = Mathf.Round(SmoothObject.transform.position.y + 1.9f);

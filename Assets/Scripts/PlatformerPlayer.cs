@@ -64,7 +64,7 @@ public class PlatformerPlayer : MonoBehaviour
         // Оставшийся код для обычного передвижения персонажа
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
-        RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.05f, groundLayer);
         bool grounded = hit.collider != null;
         bool wasGroundedPreviously = wasGrounded;
         anim.SetBool("IsGrounded", grounded);
