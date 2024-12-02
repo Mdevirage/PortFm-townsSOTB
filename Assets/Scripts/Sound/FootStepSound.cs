@@ -4,15 +4,13 @@ public class FootstepSound : MonoBehaviour
 {
     public AudioClip[] footstepSounds;  // Массив звуков шагов
     private AudioSource audioSource;
-    private int stepIndex = 0;          // Индекс для отслеживания текущего звука
-    private PlatformerPlayer Plat;
+    private int stepIndex = 0;          // Индекс для отслеживания текущего звук;
     private Animator anim;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();  // Получаем компонент AudioSource
         anim = GetComponent<Animator>();            // Получаем компонент Animator
-        Plat = GetComponent<PlatformerPlayer>();
     }
 
     // Этот метод будет вызываться через Animation Event

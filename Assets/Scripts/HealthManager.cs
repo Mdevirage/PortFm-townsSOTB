@@ -15,7 +15,7 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.X) && Starthealth > 0)
+        if (Input.GetKeyDown(KeyCode.X) && Starthealth > 0)
         {
             
         }
@@ -32,7 +32,7 @@ public class HealthManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.K))
         {
             numberStringDisplay.SetKey(false);
-        };*/
+        };
     }
     public void TakeDamage(int damage)
     {

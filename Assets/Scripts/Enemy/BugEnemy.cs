@@ -30,11 +30,12 @@ public class SimpleEnemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
     }
 
     void Update()
     {
-        // Проверяем расстояние до игрока
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         isActive = distanceToPlayer <= activationDistance;
 
@@ -88,13 +89,6 @@ public class SimpleEnemy : MonoBehaviour
         {
             animator.SetTrigger("Attack");
         }
-
-        Debug.Log("Player attacked!");
-        if (isPlayerInAttackZone)
-        {
-            Debug.Log("Player takes damage!");
-            player.GetComponent<HealthManager>().TakeDamage(attackDamage);
-        }
     }
 
     public void TakeDamage()
@@ -129,7 +123,22 @@ public class SimpleEnemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInAttackZone = false;
+            // Задержка перед выходом из зоны атаки
+            Invoke(nameof(DelayedExit), 0.5f);
+        }
+    }
+
+    private void DelayedExit()
+    {
+        isPlayerInAttackZone = false;
+        Debug.Log("Player left attack zone after delay");
+    }
+    public void ApplyDamage()
+    {
+        if (isPlayerInAttackZone)
+        {
+            Debug.Log("Player takes damage at the right moment!");
+            player.GetComponent<HealthManager>()?.TakeDamage(attackDamage);
         }
     }
 }

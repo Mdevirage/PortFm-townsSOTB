@@ -37,6 +37,9 @@ public class NumberStringDisplay : MonoBehaviour
 
         switch (units)
         {
+            case 0:
+                rectTransformUnits.anchoredPosition = new Vector2(124, -34);
+                break;
             case 4:
                 rectTransformUnits.anchoredPosition = new Vector2(129, -34);
                 break;

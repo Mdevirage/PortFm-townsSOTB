@@ -24,6 +24,7 @@ public class LadderMovement : MonoBehaviour
     private int climbingPlayerLayer;
     private int groundLayer;
     private CinemachineFramingTransposer framingTransposer;
+    private LandingSound landingSound;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -33,6 +34,7 @@ public class LadderMovement : MonoBehaviour
         playerLayer = LayerMask.NameToLayer("Player");
         climbingPlayerLayer = LayerMask.NameToLayer("ClimbingPlayer");
         groundLayer = LayerMask.NameToLayer("groundLayer");
+        landingSound = GetComponent<LandingSound>();
     }
 
     void Update()
@@ -227,6 +229,7 @@ public class LadderMovement : MonoBehaviour
         framingTransposer.m_SoftZoneHeight = 0.5f;
         virtualCamera.Follow = transform;
         anim.SetFloat("ClimbSpeed", 0);
+        landingSound.PlayLandingSound();
     }
     
     public void OnExitClimbDownAnimationComplete()
@@ -240,6 +243,7 @@ public class LadderMovement : MonoBehaviour
         SmoothObject.transform.SetParent(null);
         virtualCamera.Follow = transform;
         anim.SetFloat("ClimbSpeed", 0);
+        landingSound.PlayLandingSound();
     }
     // Метод для поиска ближайшей лестницы
     private BoxCollider2D FindClosestLadder()
@@ -290,6 +294,7 @@ public class LadderMovement : MonoBehaviour
         framingTransposer.m_SoftZoneHeight = 0.5f;
         transform.position = new Vector3(previousPositionX,transform.position.y);
         virtualCamera.Follow = transform;
+        anim.SetFloat("ClimbSpeed", 0);
         Debug.Log("Переход в состояние падения");
     }
     public void CameraClimbDown()
@@ -311,7 +316,7 @@ public class LadderMovement : MonoBehaviour
         framingTransposer.m_ScreenY = 0.76f;
         framingTransposer.m_SoftZoneHeight = 0.15f;
         float adjustedY = Mathf.Round(SmoothObject.transform.position.y + 1.9f);
-        float offset = 0.083f;
+        float offset = 0.093f;
         Vector3 targetPosition = new Vector3(previousPositionX, adjustedY-offset, transform.position.z);
         //Vector3 targetPosition = new Vector3(previousPositionX, SmoothObject.transform.position.y + 1.9f, transform.position.z);
         MoveToPosition(targetPosition, 0.8f);

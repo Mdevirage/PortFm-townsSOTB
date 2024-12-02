@@ -141,7 +141,7 @@ TextureImporter:
         serializedVersion: 2
         x: 9
         y: 144
-        width: 142
+        width: 141
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -181,10 +181,10 @@ TextureImporter:
       name: BugMv2_2
       rect:
         serializedVersion: 2
-        x: 300
+        x: 297
         y: 146
         width: 142
-        height: 88
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,9 +202,9 @@ TextureImporter:
       name: BugMv2_3
       rect:
         serializedVersion: 2
-        x: 450
+        x: 448
         y: 144
-        width: 142
+        width: 140
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -223,9 +223,9 @@ TextureImporter:
       name: BugMv2_4
       rect:
         serializedVersion: 2
-        x: 16
+        x: 2
         y: 38
-        width: 142
+        width: 156
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -244,7 +244,7 @@ TextureImporter:
       name: BugMv2_5
       rect:
         serializedVersion: 2
-        x: 168
+        x: 167
         y: 38
         width: 142
         height: 90
@@ -267,7 +267,7 @@ TextureImporter:
         serializedVersion: 2
         x: 320
         y: 40
-        width: 148
+        width: 164
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -300,6 +300,7 @@ TextureImporter:
       BugMv2_4: -1161763843
       BugMv2_5: -734249801
       BugMv2_6: -163701390
+      BugMv2_7: -1693109031
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
