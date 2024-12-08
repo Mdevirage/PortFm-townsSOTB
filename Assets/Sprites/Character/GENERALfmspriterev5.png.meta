@@ -975,6 +975,195 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_40
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 487
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cecca74b48bc55d439d4563434e9fb78
+      internalID: 1731809067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_41
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 487
+        width: 48
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 935f956dd7d68b2429b65894343e11ea
+      internalID: -870027288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_42
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 487
+        width: 54
+        height: 70
+      alignment: 9
+      pivot: {x: 0.3335, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94bf70509a1894a4bb01458b61be1ad7
+      internalID: 227045870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_43
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 558
+        width: 34
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6112b965efade6d4b969e12fa6bafe0b
+      internalID: -1263134119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_44
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 558
+        width: 38
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 676c73f16ce39264482373d47209c4fa
+      internalID: -1147664263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_45
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 558
+        width: 54
+        height: 70
+      alignment: 9
+      pivot: {x: 0.25925, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23f18f7cc80a3bb49b95c6f8a03e161c
+      internalID: 917494481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_46
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 494
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78173a8380051e94785b0e2797804cbf
+      internalID: -735979394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_47
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 507
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bb1c66a83f7ccb40b428791eeca2ab3
+      internalID: -1976367391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GENERALfmspriterev5_48
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 508
+        width: 52
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 029774b0cb5cf4646a9e1d5672093b24
+      internalID: -1773476041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

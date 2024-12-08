@@ -15,11 +15,7 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && Starthealth > 0)
-        {
-            
-        }
-        else if (Input.GetKeyDown(KeyCode.Y) && Starthealth > 0) 
+        if (Input.GetKeyDown(KeyCode.Y) && Starthealth > 0) 
         {
             Starthealth -= 1;
             numberStringDisplay.SetDoubleDigitNumber(Starthealth);

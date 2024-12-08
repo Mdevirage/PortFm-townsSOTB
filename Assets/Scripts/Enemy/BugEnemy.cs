@@ -123,6 +123,7 @@ public class SimpleEnemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            animator.SetTrigger("Attack");
             // Задержка перед выходом из зоны атаки
             Invoke(nameof(DelayedExit), 0.5f);
         }

@@ -14,8 +14,8 @@ public class PlatformerPlayer : MonoBehaviour
     private Animator anim;
     private bool isTurning;
     private bool wasGrounded;
-    private bool isCrouching = false;
-    private bool isStandingUp = false; // Переменная для блокировки действий во время StandUp
+    public bool isCrouching = false;
+    public bool isStandingUp = false; // Переменная для блокировки действий во время StandUp
     private Vector2 groundedPosition;
     private float previousDirection;
     private LadderMovement Ladder;  // Ссылка на LadderMovement
@@ -24,7 +24,7 @@ public class PlatformerPlayer : MonoBehaviour
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
     private bool isFalling;
-    
+    private CombatSystem combatSystem;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -37,10 +37,22 @@ public class PlatformerPlayer : MonoBehaviour
         landingSound = GetComponent<LandingSound>();
         originalColliderSize = box.size;
         originalColliderOffset = box.offset;
+        combatSystem = GetComponent<CombatSystem>();
     }
 
     void Update()
     {
+        if ((combatSystem.isAttacking || combatSystem.isAttackingReverse) && combatSystem.isAttackingJumping)
+        {
+            return;
+        }
+        if (combatSystem.isAttacking || combatSystem.isAttackingReverse)
+        {
+            // Блокируем движение, если персонаж атакует
+            body.velocity = new Vector2(0, body.velocity.y);
+            return;
+        }
+        
         // Если персонаж лазает по лестнице, блокируем управление движением и прыжки
         if (Ladder.isClimbing)
         {
@@ -48,10 +60,10 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);    // Устанавливаем скорость анимации в 0
             return; // Прерываем выполнение Update, если персонаж на лестнице
         }
-
         // Если персонаж выполняет StandUp, блокируем все действия
         if (isStandingUp)
         {
+            Debug.Log("Walking");
             body.velocity = new Vector2(0, body.velocity.y);
             anim.SetFloat("Speed", 0);
             return;
@@ -116,7 +128,7 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetTrigger("IsJumping");
             isFalling = true;
             // Устанавливаем фиксированную скорость падения
-            float fixedFallSpeed = -15f; // Фиксированная скорость падения
+            float fixedFallSpeed = -20f; // Фиксированная скорость падения
             body.velocity = new Vector2(0, fixedFallSpeed);
         }
 
@@ -139,7 +151,7 @@ public class PlatformerPlayer : MonoBehaviour
         }
 
         // Прыжок
-        if (grounded && Input.GetKey(KeyCode.Space) && !isCrouching && !Ladder.isClimbing && !isTurning)
+        if (grounded && Input.GetKey(KeyCode.Z) && !isCrouching && !Ladder.isClimbing && !isTurning && !Input.GetKey(KeyCode.X))
         {
             anim.SetTrigger("IsJumping");
             body.velocity = new Vector2(body.velocity.x, 0);
@@ -206,6 +218,13 @@ public class PlatformerPlayer : MonoBehaviour
         box.offset = originalColliderOffset;
         isStandingUp = false;
         anim.SetBool("IsCrouching", false);
+    }
+    public bool IsGrounded()
+    {
+        Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
+        Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.05f, groundLayer);
+        return hit.collider != null;
     }
 
     public void EndTurn()
