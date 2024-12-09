@@ -101,8 +101,6 @@ public class CombatSystem : MonoBehaviour
             jumpTriggered = false; // —брасываем флаг, если врем€ вышло
         }
     }
-
-
     public void ActivateHitBoxJump()
     {
         if (hitBoxJump != null)

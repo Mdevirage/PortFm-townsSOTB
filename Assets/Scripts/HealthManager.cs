@@ -42,6 +42,16 @@ public class HealthManager : MonoBehaviour
         }
     }
 
+    public void Kill()
+    {
+        Starthealth = 0;
+        numberStringDisplay.SetDoubleDigitNumber(Starthealth);
+
+        if (Starthealth <= 0)
+        {
+            Die();
+        }
+    }
     void Die()
     {
         // Логика смерти: проигрывание анимации или деактивация объекта

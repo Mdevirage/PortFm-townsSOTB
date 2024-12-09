@@ -12,7 +12,7 @@ public class PlatformerPlayer : MonoBehaviour
     private BoxCollider2D box;
     private Rigidbody2D body;
     private Animator anim;
-    private bool isTurning;
+    public bool isTurning;
     private bool wasGrounded;
     public bool isCrouching = false;
     public bool isStandingUp = false; // Переменная для блокировки действий во время StandUp
@@ -23,8 +23,9 @@ public class PlatformerPlayer : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
-    private bool isFalling;
+    public bool isFalling;
     private CombatSystem combatSystem;
+    private bool isMovementLocked = false;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -52,7 +53,13 @@ public class PlatformerPlayer : MonoBehaviour
             body.velocity = new Vector2(0, body.velocity.y);
             return;
         }
-        
+        if (isMovementLocked)
+        {
+            body.velocity = new Vector2(0, body.velocity.y);
+            anim.SetFloat("Speed", 0);
+            return;
+        }
+
         // Если персонаж лазает по лестнице, блокируем управление движением и прыжки
         if (Ladder.isClimbing)
         {
@@ -86,7 +93,6 @@ public class PlatformerPlayer : MonoBehaviour
             if (isFalling)
             {
                 landingSound.PlayLandingSound();
-                //framingTransposer.m_ScreenY += 0.01f;
                 isFalling = false;
             }
             else
@@ -205,7 +211,7 @@ public class PlatformerPlayer : MonoBehaviour
         isCrouching = false;
         isStandingUp = true;
         anim.SetTrigger("StandUpTrigger");
-
+        isMovementLocked = true; // Блокируем движение
         // Опционально: Используйте корутину для добавления задержки, чтобы предотвратить повторное срабатывание
         StartCoroutine(ResetStandingStateAfterDelay());
     }
@@ -232,7 +238,10 @@ public class PlatformerPlayer : MonoBehaviour
         isTurning = false;
         previousDirection = transform.localScale.x;
     }
-
+    public void UnlockMovement()
+    {
+        isMovementLocked = false; // Разблокируем движение
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
