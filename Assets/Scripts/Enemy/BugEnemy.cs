@@ -14,7 +14,6 @@ public class SimpleEnemy : MonoBehaviour
     public bool moveLeft = true;
 
     [Header("Attack Settings")]
-    public int attackDamage = 1;
     public float attackCooldown = 1.5f;
     private float lastAttackTime;
 
@@ -139,7 +138,7 @@ public class SimpleEnemy : MonoBehaviour
         if (isPlayerInAttackZone)
         {
             Debug.Log("Player takes damage at the right moment!");
-            player.GetComponent<HealthManager>()?.TakeDamage(attackDamage);
+            player.GetComponent<HealthManager>()?.TakeDamage();
         }
     }
 }

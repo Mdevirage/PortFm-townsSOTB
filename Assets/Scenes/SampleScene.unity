@@ -3517,8 +3517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa509c5c335272d42bf32da23ff675bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathEffect: {fileID: 0}
-  deathSound: {fileID: 0}
 --- !u!1 &932022140
 GameObject:
   m_ObjectHideFlags: 0
@@ -30006,6 +30004,7 @@ GameObject:
   - component: {fileID: 1353928094}
   - component: {fileID: 1353928093}
   - component: {fileID: 1353928092}
+  - component: {fileID: 1353928095}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -30091,6 +30090,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353928090}
   m_CullTransparentMesh: 1
+--- !u!114 &1353928095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353928090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866c960afc633a84085b77f0dc3c87a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1353928092}
+  healthManager: {fileID: 1803765812}
 --- !u!1 &1401118403
 GameObject:
   m_ObjectHideFlags: 0
@@ -31817,7 +31830,6 @@ MonoBehaviour:
   activationDistance: 10
   speed: 4
   moveLeft: 1
-  attackDamage: 1
   attackCooldown: 0.75
   animator: {fileID: 1599862578}
   deathEffect: {fileID: 0}
@@ -32565,8 +32577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa509c5c335272d42bf32da23ff675bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathEffect: {fileID: 0}
-  deathSound: {fileID: 0}
 --- !u!1 &1778705196
 GameObject:
   m_ObjectHideFlags: 0
@@ -33139,6 +33149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Starthealth: 24
   numberStringDisplay: {fileID: 650090258}
+  anim: {fileID: 0}
 --- !u!114 &1803765813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33715,7 +33726,6 @@ MonoBehaviour:
   activationDistance: 10
   speed: 4
   moveLeft: 1
-  attackDamage: 1
   attackCooldown: 0.75
   animator: {fileID: 1841047970}
   deathEffect: {fileID: 0}
