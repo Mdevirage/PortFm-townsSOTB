@@ -13,30 +13,37 @@ public class CombatSystem : MonoBehaviour
     public bool isAttackingJumping = false;    // Флаг атаки в прыжке
     public bool isAttackingReverse = false;     // Флаг обратной анимации
     private PlatformerPlayer player;
-
+    private LadderMovement ladderMovement;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GetComponent<PlatformerPlayer>();
+        ladderMovement = GetComponent<LadderMovement>();
     }
 
     void Update()
     {
-            // Сначала проверяем входные данные на удар стоя
-        HandleCombatInputStanding();
-        HandleCombatInputCrouching();
-        // Только если удар стоя не активировался, проверяем прыжковую атаку
-        // при условии, что персонаж в прыжке.
-        if (!isAttacking)
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 - индекс слоя
+        if (stateInfo.IsName("Aarbron_Turn"))
         {
-            HandleJumpAttackInput();
+            return;
         }
+        if (!player.isTurning) 
+        {
+            HandleCombatInputStanding();
+            HandleCombatInputCrouching();
+            if (!isAttacking)
+            {
+                HandleJumpAttackInput();
+            }
+        }
+        
     }
 
     private void HandleCombatInputStanding()
     {
-        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp) // Удар стоя
+        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp && !ladderMovement.isClimbing) // Удар стоя
         {
             if (!isAttackingStanding)
             {
@@ -56,11 +63,11 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombatInputCrouching()
     {
-        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && player.isCrouching) // Удар в приседе
+        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && player.isCrouching && !ladderMovement.isClimbing && !player.isTurning) // Удар в приседе
         {
-            Debug.Log("Crouching Attack");
             if (!isAttackingCrouching)
             {
+                Debug.Log("Standing Attack True");
                 isAttackingCrouching = true;
                 isAttacking = true;
                 animator.SetBool("IsAttackingCrouching", true);
@@ -85,7 +92,7 @@ public class CombatSystem : MonoBehaviour
         if (inAir && isDescendingOrAtApex && !isAttackingJumping)
         {
             // Если нажата кнопка удара
-            if (Input.GetKey(KeyCode.X))
+            if (Input.GetKey(KeyCode.X) && !player.isTurning)
             {
                 isAttackingJumping = true;
                 isAttacking = true;
@@ -133,6 +140,7 @@ public class CombatSystem : MonoBehaviour
 
     public void AnimationReverseComplete()
     {
+        Debug.Log("isAttackingReverse False");
         isAttackingReverse = false; // Сбрасываем флаг обратной анимации
     }
     public void EndJumpAttack()

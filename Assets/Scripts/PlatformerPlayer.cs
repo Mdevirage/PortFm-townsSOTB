@@ -162,15 +162,15 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", Mathf.Abs(deltaX));
             body.velocity = movement;
         }
-
-        // Прыжок
-        if (grounded && Input.GetKey(KeyCode.Z) && !isCrouching && !Ladder.isClimbing && !isTurning && !Input.GetKey(KeyCode.X))
-        {
-            anim.SetTrigger("IsJumping");
-            body.velocity = new Vector2(body.velocity.x, 0);
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
+        if (!Input.GetKey(KeyCode.X)){
+            // Прыжок
+            if (grounded && Input.GetKey(KeyCode.Z) && !isCrouching && !Ladder.isClimbing && !isTurning)
+            {
+                anim.SetTrigger("IsJumping");
+                body.velocity = new Vector2(body.velocity.x, 0);
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+            }
         }
-
         // Движение на движущейся платформе
         MovingPlatform platform = null;
         if (grounded && hit.collider != null)
@@ -219,7 +219,6 @@ public class PlatformerPlayer : MonoBehaviour
         isStandingUp = true;
         anim.SetTrigger("StandUpTrigger");
         isMovementLocked = true; // Блокируем движение
-        // Опционально: Используйте корутину для добавления задержки, чтобы предотвратить повторное срабатывание
         StartCoroutine(ResetStandingStateAfterDelay());
     }
 
@@ -241,6 +240,7 @@ public class PlatformerPlayer : MonoBehaviour
 
     public void EndTurn()
     {
+        Debug.Log("IsTurning False");
         isTurning = false;
         previousDirection = transform.localScale.x;
     }

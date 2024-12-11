@@ -23,6 +23,10 @@ public class HealthManager : MonoBehaviour
         {
             Starthealth -= 1;
             numberStringDisplay.SetDoubleDigitNumber(Starthealth);
+            if (Starthealth <= 0)
+            {
+                Die();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.J))

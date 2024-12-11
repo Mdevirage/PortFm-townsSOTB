@@ -25,6 +25,7 @@ public class LadderMovement : MonoBehaviour
     private int groundLayer;
     private CinemachineFramingTransposer framingTransposer;
     private LandingSound landingSound;
+    private CombatSystem combatSystem;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -35,10 +36,24 @@ public class LadderMovement : MonoBehaviour
         climbingPlayerLayer = LayerMask.NameToLayer("ClimbingPlayer");
         groundLayer = LayerMask.NameToLayer("groundLayer");
         landingSound = GetComponent<LandingSound>();
+        combatSystem = GetComponent<CombatSystem>();
     }
 
     void Update()
     {
+        if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
+        {
+            if (!combatSystem.isAttackingJumping)
+            {
+                // Блокируем движение, если персонаж атакует
+                body.velocity = new Vector2(0, body.velocity.y);
+                return;
+            }
+            else
+            {
+                return;
+            }
+        }
         if (isClimbing)
         {
             if (isExitingClimb)
