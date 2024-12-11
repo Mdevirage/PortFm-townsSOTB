@@ -26,6 +26,7 @@ public class PlatformerPlayer : MonoBehaviour
     public bool isFalling;
     private CombatSystem combatSystem;
     private bool isMovementLocked = false;
+    private HealthManager healthManager;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -39,19 +40,25 @@ public class PlatformerPlayer : MonoBehaviour
         originalColliderSize = box.size;
         originalColliderOffset = box.offset;
         combatSystem = GetComponent<CombatSystem>();
+        healthManager = GetComponent<HealthManager>();
     }
 
     void Update()
     {
-        if ((combatSystem.isAttacking || combatSystem.isAttackingReverse) && combatSystem.isAttackingJumping)
+        if (healthManager.isDead) {  return; }
+
+        if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
         {
-            return;
-        }
-        if (combatSystem.isAttacking || combatSystem.isAttackingReverse)
-        {
-            // Блокируем движение, если персонаж атакует
-            body.velocity = new Vector2(0, body.velocity.y);
-            return;
+            if (!combatSystem.isAttackingJumping)
+            {
+                // Блокируем движение, если персонаж атакует
+                body.velocity = new Vector2(0, body.velocity.y);
+                return;
+            }
+            else
+            {
+                return;
+            }
         }
         if (isMovementLocked)
         {
@@ -218,7 +225,6 @@ public class PlatformerPlayer : MonoBehaviour
 
     IEnumerator ResetStandingStateAfterDelay()
     {
-        
         yield return new WaitForSeconds(0.2f); // Настройте длительность при необходимости
         box.size = originalColliderSize;
         box.offset = originalColliderOffset;

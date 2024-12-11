@@ -14,9 +14,6 @@ public class CombatSystem : MonoBehaviour
     public bool isAttackingReverse = false;     // Флаг обратной анимации
     private PlatformerPlayer player;
 
-    private bool jumpTriggered = false;     // Флаг, указывающий, что прыжок выполнен
-    private float jumpAttackWindow = 0.1f;  // Временное окно для удара после прыжка
-    private float jumpAttackTimer = 0.125f;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -26,14 +23,20 @@ public class CombatSystem : MonoBehaviour
 
     void Update()
     {
+            // Сначала проверяем входные данные на удар стоя
         HandleCombatInputStanding();
         HandleCombatInputCrouching();
-        HandleJumpAttackInput();
+        // Только если удар стоя не активировался, проверяем прыжковую атаку
+        // при условии, что персонаж в прыжке.
+        if (!isAttacking)
+        {
+            HandleJumpAttackInput();
+        }
     }
 
     private void HandleCombatInputStanding()
     {
-        if (Input.GetKeyDown(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp) // Удар стоя
+        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp) // Удар стоя
         {
             if (!isAttackingStanding)
             {
@@ -53,7 +56,7 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombatInputCrouching()
     {
-        if (Input.GetKeyDown(KeyCode.X) && player.IsGrounded() && player.isCrouching) // Удар в приседе
+        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && player.isCrouching) // Удар в приседе
         {
             Debug.Log("Crouching Attack");
             if (!isAttackingCrouching)
@@ -73,34 +76,25 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleJumpAttackInput()
     {
-        // Если персонаж в воздухе, активируем окно для удара
-        if (player.IsGrounded() && Input.GetKey(KeyCode.Z) && !player.isCrouching && !Input.GetKey(KeyCode.X))
-        {
-            Debug.Log("Jump triggered");
-            jumpTriggered = true;
-            jumpAttackTimer = jumpAttackWindow; // Устанавливаем окно времени
-        }
-        // Если нажата кнопка атаки в течение окна
-        if (jumpTriggered && Input.GetKeyDown(KeyCode.X) && jumpAttackTimer > 0)
-        {
-            isAttackingJumping = true;
-            Debug.Log("Jump attack triggered");
-            isAttacking = true;
-            animator.SetBool("IsAttackingJumping", true); // Анимация удара в прыжке
-            ActivateHitBoxJump();
-            jumpTriggered = false; // Сбрасываем флаг прыжка
-        }
+        // Проверяем, что персонаж не на земле
+        bool inAir = !player.IsGrounded();
+        if (isAttacking)
+            return;
+        bool isDescendingOrAtApex = (body.velocity.y > 12f) ;
 
-        // Обновляем таймер окна удара
-        if (jumpAttackTimer > 0)
+        if (inAir && isDescendingOrAtApex && !isAttackingJumping)
         {
-            jumpAttackTimer -= Time.deltaTime;
-        }
-        else
-        {
-            jumpTriggered = false; // Сбрасываем флаг, если время вышло
+            // Если нажата кнопка удара
+            if (Input.GetKey(KeyCode.X))
+            {
+                isAttackingJumping = true;
+                isAttacking = true;
+                animator.SetBool("IsAttackingJumping", true); // Анимация удара в прыжке
+                ActivateHitBoxJump();
+            }
         }
     }
+
     public void ActivateHitBoxJump()
     {
         if (hitBoxJump != null)

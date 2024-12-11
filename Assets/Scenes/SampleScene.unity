@@ -31651,7 +31651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1599862576
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33150,6 +33150,7 @@ MonoBehaviour:
   Starthealth: 24
   numberStringDisplay: {fileID: 650090258}
   anim: {fileID: 0}
+  isDead: 0
 --- !u!114 &1803765813
 MonoBehaviour:
   m_ObjectHideFlags: 0

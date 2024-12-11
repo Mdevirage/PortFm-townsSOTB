@@ -7,7 +7,7 @@ public class HealthManager : MonoBehaviour
     public NumberStringDisplay numberStringDisplay;
     public Animator anim;
 
-    private bool isDead = false; // Флаг состояния смерти
+    public bool isDead = false; // Флаг состояния смерти
 
     void Start()
     {
@@ -17,7 +17,6 @@ public class HealthManager : MonoBehaviour
 
     void Update()
     {
-        if (isDead) return; // Если персонаж мертв, блокируем ввод
 
         // Пример уменьшения здоровья для теста
         if (Input.GetKeyDown(KeyCode.Y) && Starthealth > 0)
@@ -62,19 +61,8 @@ public class HealthManager : MonoBehaviour
 
     void Die()
     {
-        isDead = true; // Устанавливаем флаг смерти
         anim.SetTrigger("DeathTrigger"); // Запускаем анимацию смерти
-        StartCoroutine(HandleDeath());
-    }
-
-    // Корутину для блокировки действий во время проигрывания анимации
-    IEnumerator HandleDeath()
-    {
-        // Ожидаем окончания анимации смерти
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-
-        // Дополнительные действия после смерти
-        Debug.Log("Death animation completed. Character is dead.");
+        isDead = true; // Устанавливаем флаг смерти
     }
 
     // Метод для Animation Event, если нужно добавить событие в анимации
