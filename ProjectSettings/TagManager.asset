@@ -8,6 +8,8 @@ TagManager:
   - OverLapLadder
   - NogroundDetect
   - Enemy
+  - Ground
+  - Wood
   layers:
   - Default
   - TransparentFX

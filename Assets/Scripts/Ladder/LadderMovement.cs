@@ -61,7 +61,7 @@ public class LadderMovement : MonoBehaviour
 
 
             float verticalInput = Input.GetAxis("Vertical");
-            Debug.Log($"Vertical Input {verticalInput}");
+            //Debug.Log($"Vertical Input {verticalInput}");
             if (isClimbing)
             {
 
@@ -142,7 +142,7 @@ public class LadderMovement : MonoBehaviour
         {
             if (closestLadder != null)
             { 
-                Debug.Log($"Direction {direction} and {previousPositionX}");
+                //Debug.Log($"Direction {direction} and {previousPositionX}");
                 if (direction > 0)
                 {
                     // Персонаж подходит справа, выбираем анимацию спуска справа
@@ -163,10 +163,10 @@ public class LadderMovement : MonoBehaviour
     public void StopClimbing()
     {
         isExitingClimb = true;// Активируем флаг выхода
-        Debug.Log("isClimbing False");
+        //Debug.Log("isClimbing False");
         if (isTopDetectorActive && isGroundActive && !isBottomDetectorActive)
         {
-            Debug.Log("Лестница обрывается - персонаж начинает падать");
+            //Debug.Log("Лестница обрывается - персонаж начинает падать");
             ExitToFallingState();
             return;
         }
@@ -310,7 +310,7 @@ public class LadderMovement : MonoBehaviour
         transform.position = new Vector3(previousPositionX,transform.position.y);
         virtualCamera.Follow = transform;
         anim.SetFloat("ClimbSpeed", 0);
-        Debug.Log("Переход в состояние падения");
+        //Debug.Log("Переход в состояние падения");
     }
     public void CameraClimbDown()
     {
@@ -342,11 +342,11 @@ public class LadderMovement : MonoBehaviour
         if (tilemapToDisable != null)
         {
             tilemapToDisable.SetActive(false);
-            Debug.Log($"Tilemap {tilemapToDisable.name} отключен.");
+            //Debug.Log($"Tilemap {tilemapToDisable.name} отключен.");
         }
         else
         {
-            Debug.LogWarning("Tilemap для отключения не назначен.");
+            //Debug.LogWarning("Tilemap для отключения не назначен.");
         }
     }
     
@@ -355,11 +355,11 @@ public class LadderMovement : MonoBehaviour
         if (tilemapToDisable != null)
         {
             tilemapToDisable.SetActive(true);
-            Debug.Log($"Tilemap {tilemapToDisable.name} включен.");
+            //Debug.Log($"Tilemap {tilemapToDisable.name} включен.");
         }
         else
         {
-            Debug.LogWarning("Tilemap для включения не назначен.");
+            //Debug.LogWarning("Tilemap для включения не назначен.");
         }
         
     }
@@ -403,7 +403,7 @@ public class LadderMovement : MonoBehaviour
 
             anim.SetBool("IsClimbing", true);
             transform.position = new Vector2(horizontalposition, transform.position.y);
-            Debug.Log($"ApproachDirection {approachDirection}");
+            //Debug.Log($"ApproachDirection {approachDirection}");
         }
     }
     public void MoveToPosition(Vector3 targetPosition, float duration)

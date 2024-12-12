@@ -2,40 +2,68 @@ using UnityEngine;
 
 public class FootstepSound : MonoBehaviour
 {
-    public AudioClip[] footstepSounds;  // Массив звуков шагов
+    [Header("Footstep Sounds")]
+    public AudioClip[] defaultFootstepSounds; // Звуки шагов по стандартной поверхности
+    public AudioClip[] WoodFootstepSounds;   // Звуки шагов по дереву
+    public AudioClip[] stoneFootstepSounds;  // Звуки шагов по камню
+
     private AudioSource audioSource;
-    private int stepIndex = 0;          // Индекс для отслеживания текущего звук;
     private Animator anim;
+    private AudioClip[] currentFootstepSounds; // Текущий набор звуков шагов
+    private int stepIndex = 0;                 // Индекс для отслеживания текущего звука
+    private string currentSurfaceTag = "Ground"; // Текущий тег поверхности
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();  // Получаем компонент AudioSource
-        anim = GetComponent<Animator>();            // Получаем компонент Animator
+        audioSource = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
+        currentFootstepSounds = defaultFootstepSounds; // По умолчанию используем стандартные звуки шагов
     }
 
-    // Этот метод будет вызываться через Animation Event
-    public void PlayFootstepSound()
+    void Update()
     {
-        if (audioSource != null && footstepSounds.Length > 0)
+        // Сбрасываем звуки шагов, если персонаж перестал двигаться
+        if (anim.GetFloat("Speed") == 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Aarbron_Jump"))
         {
-            audioSource.PlayOneShot(footstepSounds[stepIndex]);  // Воспроизведение текущего звука
-            stepIndex = (stepIndex + 1) % footstepSounds.Length;  // Переход к следующему звуку
+            ResetFootstepSound();
         }
     }
 
-    // Метод для сброса индекса звука
-    public void ResetFootstepSound()
+    public void PlayFootstepSound()
     {
-        stepIndex = 0;  // Сброс индекса шагов на первый звук
+        if (audioSource != null && currentFootstepSounds.Length > 0)
+        {
+            audioSource.PlayOneShot(currentFootstepSounds[stepIndex]);
+            stepIndex = (stepIndex + 1) % currentFootstepSounds.Length;
+        }
     }
 
-    // Этот метод вызывается в Update, чтобы проверять, если анимация остановилась
-    void Update()
+    private void ResetFootstepSound()
     {
-        // Проверяем, если персонаж больше не выполняет анимацию "Run" (или другую анимацию движения)
-        if (anim.GetFloat("Speed") == 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Aarbron_Jump"))  // Например, анимационный параметр "Speed" равен нулю при остановке
+        stepIndex = 0;
+    }
+
+    public void UpdateSurfaceTag(string tag)
+    {
+        currentSurfaceTag = tag;
+
+        switch (currentSurfaceTag)
         {
-            ResetFootstepSound();  // Если анимация остановилась, сбрасываем индекс звука на первый
+            case "Wood":
+                currentFootstepSounds = WoodFootstepSounds;
+                break;
+            default:
+                currentFootstepSounds = defaultFootstepSounds;
+                break;
+        }
+    }
+
+    public void ResetSurfaceTag(string tag)
+    {
+        if (tag == currentSurfaceTag)
+        {
+            currentSurfaceTag = "Ground";
+            currentFootstepSounds = defaultFootstepSounds;
         }
     }
 }

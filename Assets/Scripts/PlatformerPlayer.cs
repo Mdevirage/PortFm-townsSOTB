@@ -98,7 +98,7 @@ public class PlatformerPlayer : MonoBehaviour
         if (!wasGroundedPreviously && grounded)
         {
             if (isFalling)
-            {
+            { 
                 landingSound.PlayLandingSound();
                 isFalling = false;
             }

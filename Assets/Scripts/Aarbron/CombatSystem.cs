@@ -47,6 +47,7 @@ public class CombatSystem : MonoBehaviour
         {
             if (!isAttackingStanding)
             {
+                body.velocity = Vector2.zero;
                 isAttackingStanding = true;
                 isAttacking = true;
                 animator.SetBool("IsAttackingStanding", true);
