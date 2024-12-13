@@ -20,7 +20,7 @@ public class SurfaceDetector : MonoBehaviour
         if (other.tag != "Ladder")
         {
             // Если персонаж покидает триггер, сбрасываем на стандартные звуки
-            Debug.Log("Reset");
+            //Debug.Log("Reset");
             footstepSound.ResetSurfaceTag(other.tag);
             landingSound.ResetSurfaceTag(other.tag);
         }

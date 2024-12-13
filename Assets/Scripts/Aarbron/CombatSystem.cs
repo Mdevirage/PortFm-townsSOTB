@@ -25,7 +25,8 @@ public class CombatSystem : MonoBehaviour
     void Update()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 - индекс слоя
-        if (stateInfo.IsName("Aarbron_Turn"))
+        if (stateInfo.IsName("Aarbron_Turn") || stateInfo.IsName("Aarbron_ClimbUPRevv2") || stateInfo.IsName("Aarbron_descentRevR")
+            || stateInfo.IsName("Aarbron_descentRevL"))
         {
             return;
         }
@@ -68,7 +69,6 @@ public class CombatSystem : MonoBehaviour
         {
             if (!isAttackingCrouching)
             {
-                Debug.Log("Standing Attack True");
                 isAttackingCrouching = true;
                 isAttacking = true;
                 animator.SetBool("IsAttackingCrouching", true);
@@ -151,5 +151,4 @@ public class CombatSystem : MonoBehaviour
         animator.SetBool("IsAttackingJumping", false);
         DeactivateHitBoxJump();
     }
-
 }

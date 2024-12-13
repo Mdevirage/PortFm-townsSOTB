@@ -77,7 +77,6 @@ public class PlatformerPlayer : MonoBehaviour
         // Если персонаж выполняет StandUp, блокируем все действия
         if (isStandingUp)
         {
-            Debug.Log("Walking");
             body.velocity = new Vector2(0, body.velocity.y);
             anim.SetFloat("Speed", 0);
             return;

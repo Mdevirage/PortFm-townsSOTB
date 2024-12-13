@@ -1099,7 +1099,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Aarbron_descentReverse
+  m_Name: Aarbron_descentRevR
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1895,19 +1895,19 @@ AnimatorStateMachine:
     m_Position: {x: 250, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 458486476449600638}
-    m_Position: {x: 630, y: 620, z: 0}
+    m_Position: {x: 700, y: 730, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -945132518007178519}
-    m_Position: {x: 950, y: 430, z: 0}
+    m_Position: {x: 870, y: 550, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2233617326311816259}
     m_Position: {x: 530, y: 1000, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2378541372956092696}
-    m_Position: {x: 710, y: 930, z: 0}
+    m_Position: {x: 620, y: 780, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -333374883164073918}
-    m_Position: {x: 950, y: 310, z: 0}
+    m_Position: {x: 950, y: 420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3129598013996335745}
     m_Position: {x: 1040, y: 1000, z: 0}
@@ -1916,7 +1916,7 @@ AnimatorStateMachine:
     m_Position: {x: -150, y: 880, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2473376155841517484}
-    m_Position: {x: 700, y: 540, z: 0}
+    m_Position: {x: 770, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5583684371920281022}
     m_Position: {x: 700, y: 250, z: 0}

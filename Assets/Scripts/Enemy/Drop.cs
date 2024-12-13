@@ -21,7 +21,7 @@ public class Drop : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        Debug.Log("Start Position: " + transform.position);
+        //Debug.Log("Start Position: " + transform.position);
     }
 
     private void Update()

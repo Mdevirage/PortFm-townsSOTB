@@ -29754,7 +29754,7 @@ GameObject:
   - component: {fileID: 1291737265}
   m_Layer: 3
   m_Name: Ground (8)
-  m_TagString: Wood
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
