@@ -81,6 +81,7 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);
             return;
         }
+
         if (!Ladder.isClimbing && !Ladder.isTopDetectorActive)
         {
             HandleStandUpInput();
@@ -135,7 +136,7 @@ public class PlatformerPlayer : MonoBehaviour
         {
             // Останавливаем горизонтальное движение
             movement.x = 0;
-
+            Debug.Log("Falling");
             // Триггер анимации прыжка
             anim.SetTrigger("IsJumping");
             isFalling = true;

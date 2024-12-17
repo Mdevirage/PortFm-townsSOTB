@@ -12,8 +12,17 @@ public class CombatSystem : MonoBehaviour
     private bool isAttackingCrouching = false;  // Флаг атаки в приседе
     public bool isAttackingJumping = false;    // Флаг атаки в прыжке
     public bool isAttackingReverse = false;     // Флаг обратной анимации
+
+    // Особый удар
+    public bool canSpecialAttack = false;       // Может ли персонаж выполнять особый удар
+    public GameObject energyProjectilePrefab;   // Префаб для снаряда энергии
+    public Transform shootPoint;                // Точка, откуда выстрел
+
     private PlatformerPlayer player;
     private LadderMovement ladderMovement;
+    public GameObject chargeEffectObject;
+    public bool isMoving;
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -25,41 +34,59 @@ public class CombatSystem : MonoBehaviour
     void Update()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 - индекс слоя
-        if (stateInfo.IsName("Aarbron_Turn") || stateInfo.IsName("Aarbron_ClimbUPRevv2") || stateInfo.IsName("Aarbron_descentRevR")
-            || stateInfo.IsName("Aarbron_descentRevL"))
+        if (stateInfo.IsName("Aarbron_Turn") || stateInfo.IsName("Aarbron_ClimbUPRevv2") || stateInfo.IsName("Aarbron_descentRevR") ||
+            stateInfo.IsName("Aarbron_descentRevL"))
         {
             return;
         }
-        if (!player.isTurning) 
+
+        if (!player.isTurning)
         {
             HandleCombatInputStanding();
             HandleCombatInputCrouching();
+
             if (!isAttacking)
             {
                 HandleJumpAttackInput();
             }
         }
-        
+        if (!isAttacking)
+        {
+            chargeEffectObject.SetActive(false);
+        }
     }
 
     private void HandleCombatInputStanding()
     {
         if (Input.GetKey(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp && !ladderMovement.isClimbing) // Удар стоя
         {
+            shootPoint.transform.localPosition = new Vector2(1.78f, 0.6875f);
             if (!isAttackingStanding)
             {
                 body.velocity = Vector2.zero;
                 isAttackingStanding = true;
                 isAttacking = true;
-                animator.SetBool("IsAttackingStanding", true);
+                animator.SetBool("IsAttackingStanding", true); // Включаем обычную атаку стоя
             }
         }
         else if (isAttackingStanding && Input.GetKeyUp(KeyCode.X))
         {
-            isAttackingReverse = true;
-            isAttackingStanding = false;
-            isAttacking = false;
-            animator.SetBool("IsAttackingStanding", false);
+            if (canSpecialAttack)
+            {
+                isAttackingReverse = true;
+                isAttackingStanding = false;
+                isAttacking = false;
+                chargeEffectObject.SetActive(false);
+                animator.SetBool("IsAttackingStanding", false);
+                PerformSpecialAttack(); // Выполняем выстрел энергии
+            }
+            else
+            {
+                isAttackingReverse = true;
+                isAttackingStanding = false;
+                isAttacking = false;
+                animator.SetBool("IsAttackingStanding", false);
+            }
         }
     }
 
@@ -67,6 +94,7 @@ public class CombatSystem : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.X) && player.IsGrounded() && player.isCrouching && !ladderMovement.isClimbing && !player.isTurning) // Удар в приседе
         {
+            shootPoint.transform.localPosition = new Vector2(2.0325f, -0.125f);
             if (!isAttackingCrouching)
             {
                 isAttackingCrouching = true;
@@ -76,9 +104,21 @@ public class CombatSystem : MonoBehaviour
         }
         else if (isAttackingCrouching && Input.GetKeyUp(KeyCode.X))
         {
-            isAttackingCrouching = false;
-            isAttacking = false;
-            animator.SetBool("IsAttackingCrouching", false);
+            if (canSpecialAttack)
+            {
+                isAttackingCrouching = false;
+                isAttacking = false;
+                chargeEffectObject.SetActive(false);
+                animator.SetBool("IsAttackingCrouching", false);
+                PerformSpecialAttack();
+                
+            }
+            else
+            {
+                isAttackingCrouching = false;
+                isAttacking = false;
+                animator.SetBool("IsAttackingCrouching", false);
+            }
         }
     }
 
@@ -88,7 +128,8 @@ public class CombatSystem : MonoBehaviour
         bool inAir = !player.IsGrounded();
         if (isAttacking)
             return;
-        bool isDescendingOrAtApex = (body.velocity.y > 12f) ;
+
+        bool isDescendingOrAtApex = (body.velocity.y > 12f);
 
         if (inAir && isDescendingOrAtApex && !isAttackingJumping)
         {
@@ -103,6 +144,22 @@ public class CombatSystem : MonoBehaviour
         }
     }
 
+    private void PerformSpecialAttack()
+    {
+        GameObject projectile = Instantiate(energyProjectilePrefab, shootPoint.position, Quaternion.identity);
+
+        // Устанавливаем направление полета снаряда в зависимости от направления персонажа
+        Vector3 projectileScale = projectile.transform.localScale;
+        projectileScale.x = Mathf.Sign(transform.localScale.x) * Mathf.Abs(projectileScale.x); // Устанавливаем правильный масштаб
+        projectile.transform.localScale = projectileScale;
+    }
+    public void ChargeAnimation()
+    {
+        if (canSpecialAttack)
+        {
+            chargeEffectObject.SetActive(true);
+        }
+    }
     public void ActivateHitBoxJump()
     {
         if (hitBoxJump != null)
@@ -117,7 +174,7 @@ public class CombatSystem : MonoBehaviour
 
     public void ActivateHitBoxStand()
     {
-        if (hitBoxStand != null)
+        if (hitBoxStand != null && !canSpecialAttack)
             hitBoxStand.SetActive(true); // Включаем хитбокс стоя
     }
 
@@ -129,7 +186,7 @@ public class CombatSystem : MonoBehaviour
 
     public void ActivateHitBoxCrounch()
     {
-        if (hitBoxCrounch != null)
+        if (hitBoxCrounch != null && !canSpecialAttack)
             hitBoxCrounch.SetActive(true); // Включаем хитбокс в приседе
     }
 
@@ -144,6 +201,7 @@ public class CombatSystem : MonoBehaviour
         Debug.Log("isAttackingReverse False");
         isAttackingReverse = false; // Сбрасываем флаг обратной анимации
     }
+
     public void EndJumpAttack()
     {
         isAttackingJumping = false;

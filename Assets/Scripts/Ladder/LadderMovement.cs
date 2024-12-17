@@ -41,7 +41,6 @@ public class LadderMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($"isClimbing {isClimbing}");
         if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
         {
             if (!combatSystem.isAttackingJumping)
@@ -90,12 +89,12 @@ public class LadderMovement : MonoBehaviour
         {
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
             if (body.velocity.y == 0 && isTopDetectorActive && (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow)) && Input.GetAxis("Vertical") != 0
-                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev") && !stateInfo.IsName("Aarbron_StandUp"))
+                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
             {
                 StartClimbing(true); // Начинаем подъем
             }
             else if (body.velocity.y == 0 && isBottomDetectorActive && (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) && Input.GetAxis("Vertical") != 0
-                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev") && !stateInfo.IsName("Aarbron_StandUp"))
+                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
             {
                 StartClimbing(false); // Начинаем спуск
             }

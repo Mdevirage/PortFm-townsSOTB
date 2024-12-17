@@ -8,10 +8,15 @@ public class PlayerHitBox : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             SimpleEnemy enemy = other.GetComponent<SimpleEnemy>();
+            Sphere sphere = other.GetComponent<Sphere>();
             if (enemy != null)
             {
                 enemy.TakeDamage(); // Наносим урон врагу
                 Debug.Log("Take damage");
+            }
+            if (sphere != null)
+            {
+                sphere.TakeDamage();
             }
         }
     }

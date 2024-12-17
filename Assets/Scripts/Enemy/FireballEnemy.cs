@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class FireballEnemy : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public float speed = 15f; // Скорость движения снаряда
+    private Rigidbody2D rb;
+    private Animator animator;
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        ActivateMovement();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ActivateMovement()
     {
-        
+        if (rb != null)
+        {
+            float direction = Mathf.Sign(transform.localScale.x); // 1 для вправо, -1 для влево
+            rb.velocity = new Vector2(direction * speed, 0); // Устанавливаем движение
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            HealthManager health = other.GetComponent<HealthManager>();
+            if (health != null)
+            {
+                health.TakeDamage();
+            }
+        }
+    }
+    void OnBecameInvisible()
+    {
+        Destroy(gameObject);
     }
 }
