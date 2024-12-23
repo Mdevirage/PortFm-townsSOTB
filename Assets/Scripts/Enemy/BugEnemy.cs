@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SimpleEnemy : MonoBehaviour
+public class BugEnemy : MonoBehaviour
 {
     [Header("Activation Settings")]
     public Transform player;
@@ -40,7 +40,7 @@ public class SimpleEnemy : MonoBehaviour
 
         if (isPlayerInAttackZone)
         {
-            Debug.Log("Player in attack zone");
+            //Debug.Log("Player in attack zone");
             TryAttack();
             StopMovement();
             return;
@@ -131,13 +131,13 @@ public class SimpleEnemy : MonoBehaviour
     private void DelayedExit()
     {
         isPlayerInAttackZone = false;
-        Debug.Log("Player left attack zone after delay");
+        //Debug.Log("Player left attack zone after delay");
     }
     public void ApplyDamage()
     {
         if (isPlayerInAttackZone)
         {
-            Debug.Log("Player takes damage at the right moment!");
+            //Debug.Log("Player takes damage at the right moment!");
             player.GetComponent<HealthManager>()?.TakeDamage();
         }
     }

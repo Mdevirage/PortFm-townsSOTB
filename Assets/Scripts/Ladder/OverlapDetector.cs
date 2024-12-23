@@ -15,7 +15,7 @@ public class OverlapDetector : MonoBehaviour
     {
         if (collision.CompareTag("OverLapLadder"))
         {
-            Debug.Log("Вход в Over детектор");
+            //Debug.Log("Вход в Over детектор");
             playerLadderMovement.isOverlapLadderActive = true;
         }
     }
@@ -24,7 +24,7 @@ public class OverlapDetector : MonoBehaviour
     {
         if (collision.CompareTag("OverLapLadder"))
         {
-            Debug.Log("Выход из Over детектора");
+            //Debug.Log("Выход из Over детектора");
             playerLadderMovement.isOverlapLadderActive = false;
         }
     }

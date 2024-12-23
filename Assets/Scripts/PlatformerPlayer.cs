@@ -10,23 +10,25 @@ public class PlatformerPlayer : MonoBehaviour
     public float jumpForce = 12.0f;
     public LayerMask groundLayer;
     private BoxCollider2D box;
-    private Rigidbody2D body;
+    public Rigidbody2D body;
     private Animator anim;
     public bool isTurning;
     private bool wasGrounded;
     public bool isCrouching = false;
     public bool isStandingUp = false; // Переменная для блокировки действий во время StandUp
     private Vector2 groundedPosition;
-    private float previousDirection;
+    public float previousDirection;
     private LadderMovement Ladder;  // Ссылка на LadderMovement
     private LandingSound landingSound;
-    public CinemachineVirtualCamera virtualCamera;
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
     public bool isFalling;
     private CombatSystem combatSystem;
-    private bool isMovementLocked = false;
+    public bool isMovementLocked = false;
     private HealthManager healthManager;
+
+    public bool isJumping = false;
+
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -45,6 +47,14 @@ public class PlatformerPlayer : MonoBehaviour
 
     void Update()
     {
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("TakeDamageStanding")) 
+        {
+            body.velocity = new Vector2(0, body.velocity.y);
+            anim.SetFloat("Speed", 0);
+            return; 
+        }
+
         if (healthManager.isDead) {  return; }
 
         if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
@@ -91,7 +101,7 @@ public class PlatformerPlayer : MonoBehaviour
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
         RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.05f, groundLayer);
-        bool grounded = hit.collider != null;
+        bool grounded = hit.collider != null && hit.distance <= 0.05f;
         bool wasGroundedPreviously = wasGrounded;
         anim.SetBool("IsGrounded", grounded);
 
@@ -105,10 +115,15 @@ public class PlatformerPlayer : MonoBehaviour
             else
             {
                 landingSound.PlayLandingSound();
+                isJumping = false;
             }
         }
-
-        wasGrounded = grounded;
+        if (grounded != wasGrounded)
+        {
+            Debug.Log($"Grounded state changed: {grounded}");
+            wasGrounded = grounded;
+        }
+        //wasGrounded = grounded;
 
         // Приседания
         if (grounded && (Input.GetKey(KeyCode.DownArrow) && !Ladder.isClimbing && !Ladder.isBottomDetectorActive) && !Input.GetKey(KeyCode.UpArrow))
@@ -136,7 +151,7 @@ public class PlatformerPlayer : MonoBehaviour
         {
             // Останавливаем горизонтальное движение
             movement.x = 0;
-            Debug.Log("Falling");
+            //Debug.Log("Falling");
             // Триггер анимации прыжка
             anim.SetTrigger("IsJumping");
             isFalling = true;
@@ -157,6 +172,7 @@ public class PlatformerPlayer : MonoBehaviour
             }
         }
 
+
         if (!isTurning && grounded)
         {
             anim.SetFloat("Speed", Mathf.Abs(deltaX));
@@ -166,6 +182,7 @@ public class PlatformerPlayer : MonoBehaviour
             // Прыжок
             if (grounded && Input.GetKey(KeyCode.Z) && !isCrouching && !Ladder.isClimbing && !isTurning)
             {
+                isJumping = true;
                 anim.SetTrigger("IsJumping");
                 body.velocity = new Vector2(body.velocity.x, 0);
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
@@ -244,6 +261,7 @@ public class PlatformerPlayer : MonoBehaviour
         isTurning = false;
         previousDirection = transform.localScale.x;
     }
+
     public void UnlockMovement()
     {
         isMovementLocked = false; // Разблокируем движение
@@ -254,7 +272,7 @@ public class PlatformerPlayer : MonoBehaviour
         if (box != null)
         {
             Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
-            Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
+            Vector2 boxSize = new Vector2(box.bounds.size.x-0.25f, 0.1f);
             Gizmos.DrawWireCube(boxCenter + (Vector2.down * 0.1f / 2), boxSize);
         }
     }

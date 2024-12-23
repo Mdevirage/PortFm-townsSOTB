@@ -13,7 +13,7 @@ public class TopLadderDetector : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            Debug.Log("Вход в верхний детектор");
+            //Debug.Log("Вход в верхний детектор");
             playerLadderMovement.isTopDetectorActive = true;
         }
     }
@@ -22,7 +22,7 @@ public class TopLadderDetector : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            Debug.Log("Выход из верхнего детектора");
+            //Debug.Log("Выход из верхнего детектора");
             playerLadderMovement.isTopDetectorActive = false;
         }
     }

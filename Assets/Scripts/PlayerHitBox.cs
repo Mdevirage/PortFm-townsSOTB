@@ -4,20 +4,15 @@ public class PlayerHitBox : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Проверяем, является ли объект врагом
         if (other.CompareTag("Enemy"))
         {
-            SimpleEnemy enemy = other.GetComponent<SimpleEnemy>();
+            BugEnemy bugEnemy = other.GetComponent<BugEnemy>();
+            Sword sword = other.GetComponent<Sword>();
             Sphere sphere = other.GetComponent<Sphere>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(); // Наносим урон врагу
-                Debug.Log("Take damage");
-            }
-            if (sphere != null)
-            {
-                sphere.TakeDamage();
-            }
+
+            if (bugEnemy != null) bugEnemy.TakeDamage();
+            if (sword != null) sword.TakeDamage();
+            if (sphere != null) sphere.TakeDamage();
         }
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Demon : MonoBehaviour
 {
     public GameObject firingObject;
-    public AudioSource demonSound; // Источник звука
     public Transform player; // Ссылка на игрока
     public Sphere sphere;
     public void ShowObject()
@@ -16,16 +15,7 @@ public class Demon : MonoBehaviour
     {
         firingObject.SetActive(false);
     }
-    private void OnBecameVisible()
-    {
-        demonSound.enabled = true; // Активируем объект
-    }
-    // Этот метод вызывается, когда объект становится невидимым камерой
-    private void OnBecameInvisible()
-    {
-        demonSound.enabled = false;
-    }
-    public void TriggerJump() 
+    public void TriggerJump()
     {
         sphere.StartJump();
     }

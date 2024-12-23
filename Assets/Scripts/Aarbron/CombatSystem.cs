@@ -8,8 +8,8 @@ public class CombatSystem : MonoBehaviour
     public GameObject hitBoxJump;           // Хитбокс для атаки в прыжке
     public bool isAttacking = false;        // Флаг атаки
     private Rigidbody2D body;
-    private bool isAttackingStanding = false;   // Флаг атаки стоя
-    private bool isAttackingCrouching = false;  // Флаг атаки в приседе
+    public bool isAttackingStanding = false;   // Флаг атаки стоя
+    public bool isAttackingCrouching = false;  // Флаг атаки в приседе
     public bool isAttackingJumping = false;    // Флаг атаки в прыжке
     public bool isAttackingReverse = false;     // Флаг обратной анимации
 
@@ -21,14 +21,14 @@ public class CombatSystem : MonoBehaviour
     private PlatformerPlayer player;
     private LadderMovement ladderMovement;
     public GameObject chargeEffectObject;
-    public bool isMoving;
-
+    private HealthManager healthManager;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GetComponent<PlatformerPlayer>();
         ladderMovement = GetComponent<LadderMovement>();
+        healthManager = GetComponent<HealthManager>();
     }
 
     void Update()
@@ -39,8 +39,11 @@ public class CombatSystem : MonoBehaviour
         {
             return;
         }
-
-        if (!player.isTurning)
+        if(stateInfo.IsName("TakeDamageStanding")|| stateInfo.IsName("TakeDamageCrouching"))
+        {
+            return;
+        }
+        if (!player.isTurning && !healthManager.getdamage)
         {
             HandleCombatInputStanding();
             HandleCombatInputCrouching();
@@ -54,6 +57,16 @@ public class CombatSystem : MonoBehaviour
         {
             chargeEffectObject.SetActive(false);
         }
+        if (healthManager.getdamage)
+        {
+            ResetAttack(); // Сбрасываем атаку
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+            ResetAttack();
+        }
+        Debug.Log($"isAttackingStanding {isAttackingStanding} & Reverse {isAttackingReverse}");
     }
 
     private void HandleCombatInputStanding()
@@ -198,7 +211,7 @@ public class CombatSystem : MonoBehaviour
 
     public void AnimationReverseComplete()
     {
-        Debug.Log("isAttackingReverse False");
+        //Debug.Log("isAttackingReverse False");
         isAttackingReverse = false; // Сбрасываем флаг обратной анимации
     }
 
@@ -208,5 +221,33 @@ public class CombatSystem : MonoBehaviour
         isAttacking = false;
         animator.SetBool("IsAttackingJumping", false);
         DeactivateHitBoxJump();
+    }
+
+    public void ResetAttack()
+    {
+        if (isAttackingStanding)
+        {
+            isAttackingStanding = false;
+            isAttacking = false;
+            isAttackingReverse = false;
+            animator.SetBool("IsAttackingStanding", false);
+            chargeEffectObject.SetActive(false);
+        }
+        if (isAttackingCrouching)
+        {
+            isAttackingCrouching = false;
+            isAttacking = false;
+            isAttackingReverse = false;
+            animator.SetBool("IsAttackingCrouching", false);
+            chargeEffectObject.SetActive(false);
+        }
+        if (isAttackingJumping)
+        {
+            isAttackingJumping = false;
+            isAttacking = false;
+            isAttackingReverse = false;
+            animator.SetBool("IsAttackingJumping", false);
+            DeactivateHitBoxJump();
+        }
     }
 }

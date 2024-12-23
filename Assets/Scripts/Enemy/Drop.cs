@@ -65,19 +65,14 @@ public class Drop : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!End)
+            HealthManager playerHealth =other.GetComponent<HealthManager>();
+            if (playerHealth != null)
             {
-                KillPlayer(other);
+                if (!End)
+                {
+                    playerHealth.TakeDamage();
+                }
             }
-        }
-    }
-
-    private void KillPlayer(Collider2D playerCollider)
-    {
-        HealthManager playerHealth = playerCollider.GetComponent<HealthManager>();
-        if (playerHealth != null)
-        {
-            playerHealth.TakeDamage();
         }
     }
 
