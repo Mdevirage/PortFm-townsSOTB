@@ -26,7 +26,6 @@ public class PlatformerPlayer : MonoBehaviour
     private CombatSystem combatSystem;
     public bool isMovementLocked = false;
     private HealthManager healthManager;
-
     public bool isJumping = false;
 
     void Start()
@@ -54,7 +53,15 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);
             return; 
         }
-
+        
+        if (Input.GetKeyUp(KeyCode.RightArrow) || isJumping)
+        {
+           healthManager.button = false;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow) || isJumping)
+        {
+            healthManager.button = false;
+        }
         if (healthManager.isDead) {  return; }
 
         if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
@@ -71,6 +78,12 @@ public class PlatformerPlayer : MonoBehaviour
             }
         }
         if (isMovementLocked)
+        {
+            body.velocity = new Vector2(0, body.velocity.y);
+            anim.SetFloat("Speed", 0);
+            return;
+        }
+        if (healthManager.button)
         {
             body.velocity = new Vector2(0, body.velocity.y);
             anim.SetFloat("Speed", 0);
@@ -101,14 +114,14 @@ public class PlatformerPlayer : MonoBehaviour
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
         RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.05f, groundLayer);
-        bool grounded = hit.collider != null && hit.distance <= 0.05f;
+        bool grounded = hit.collider != null && hit.distance <= 0.1f;
         bool wasGroundedPreviously = wasGrounded;
         anim.SetBool("IsGrounded", grounded);
 
         if (!wasGroundedPreviously && grounded)
         {
             if (isFalling)
-            { 
+            {
                 landingSound.PlayLandingSound();
                 isFalling = false;
             }
@@ -116,11 +129,12 @@ public class PlatformerPlayer : MonoBehaviour
             {
                 landingSound.PlayLandingSound();
                 isJumping = false;
+                healthManager.hasJumpCollision = false;
             }
         }
         if (grounded != wasGrounded)
         {
-            Debug.Log($"Grounded state changed: {grounded}");
+            //Debug.Log($"Grounded state changed: {grounded}");
             wasGrounded = grounded;
         }
         //wasGrounded = grounded;
@@ -150,6 +164,7 @@ public class PlatformerPlayer : MonoBehaviour
         if (!grounded && transform.position.y < groundedPosition.y)
         {
             // Останавливаем горизонтальное движение
+            Debug.Log("IsFalling");
             movement.x = 0;
             //Debug.Log("Falling");
             // Триггер анимации прыжка
@@ -171,8 +186,7 @@ public class PlatformerPlayer : MonoBehaviour
                 anim.SetTrigger("Turn");
             }
         }
-
-
+        
         if (!isTurning && grounded)
         {
             anim.SetFloat("Speed", Mathf.Abs(deltaX));
@@ -251,13 +265,13 @@ public class PlatformerPlayer : MonoBehaviour
     {
         Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
         Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
-        RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.05f, groundLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0, Vector2.down, 0.1f, groundLayer);
         return hit.collider != null;
     }
 
     public void EndTurn()
     {
-        Debug.Log("IsTurning False");
+        //Debug.Log("IsTurning False");
         isTurning = false;
         previousDirection = transform.localScale.x;
     }
@@ -276,4 +290,5 @@ public class PlatformerPlayer : MonoBehaviour
             Gizmos.DrawWireCube(boxCenter + (Vector2.down * 0.1f / 2), boxSize);
         }
     }
+
 }

@@ -15,7 +15,7 @@ public class NoGroundDetect : MonoBehaviour
     {
         if (collision.CompareTag("NogroundDetect"))
         {
-            Debug.Log("Внизу");
+            //Debug.Log("Внизу");
             playerLadderMovement.isGroundActive = true; // Активируем флаг для движения вниз
         }
     }

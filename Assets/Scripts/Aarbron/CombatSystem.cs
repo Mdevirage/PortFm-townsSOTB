@@ -66,7 +66,7 @@ public class CombatSystem : MonoBehaviour
         {
             ResetAttack();
         }
-        Debug.Log($"isAttackingStanding {isAttackingStanding} & Reverse {isAttackingReverse}");
+        //Debug.Log($"isAttackingStanding {isAttackingStanding} & Reverse {isAttackingReverse}");
     }
 
     private void HandleCombatInputStanding()

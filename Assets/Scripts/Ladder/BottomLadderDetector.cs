@@ -13,7 +13,8 @@ public class BottomLadderDetector : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            //Debug.Log("Внизу");
+            //
+            //.Log("Внизу");
             playerLadderMovement.isBottomDetectorActive = true; // Активируем флаг для движения вниз
         }
     }

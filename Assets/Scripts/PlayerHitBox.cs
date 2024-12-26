@@ -9,10 +9,12 @@ public class PlayerHitBox : MonoBehaviour
             BugEnemy bugEnemy = other.GetComponent<BugEnemy>();
             Sword sword = other.GetComponent<Sword>();
             Sphere sphere = other.GetComponent<Sphere>();
+            Axe axe = other.GetComponent<Axe>();
 
             if (bugEnemy != null) bugEnemy.TakeDamage();
             if (sword != null) sword.TakeDamage();
             if (sphere != null) sphere.TakeDamage();
+            if (axe != null) axe.TakeDamage();
         }
     }
 }

@@ -30,24 +30,51 @@ public class Sword : MonoBehaviour
     private Rigidbody2D rb;
     public Transform playerTransform;
     public HealthManager health;
+    
+    private AudioSource audioSource;
+    private bool wasInCameraView = false;
 
     private bool isAttacking;
     private bool isPlayerInAttackRange;
+    private bool isPlayerInHitbox;
     // ...
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         lastAttackTime = -attackCooldown;
     }
 
     void Update()
     {
         if (playerTransform == null) return;
+        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
 
+        // Если объект внутри экрана (0..1 по X и 0..1 по Y) и перед камерой (z > 0)
+        bool isInCameraView = (viewportPos.x >= -0.1f && viewportPos.x <= 1.1f
+                            && viewportPos.y >= 0f && viewportPos.y <= 1f
+                            && viewportPos.z > 0f);
+
+        if (isInCameraView && !wasInCameraView)
+        {
+            // Объект только что стал видим
+            audioSource?.Play();
+            wasInCameraView = true;
+        }
+        else if (!isInCameraView && wasInCameraView)
+        {
+            Destroy(gameObject);
+        }
+        if (!isInCameraView)
+        {
+            return;
+        }
         // Считаем расстояние до игрока
-        float dist = Vector2.Distance(transform.position, playerTransform.position);
+        //float dist = Vector2.Distance(transform.position, playerTransform.position);
+        Vector2 diff = new Vector2(playerTransform.position.x - transform.position.x, 0f);
+        float dist = diff.magnitude;  // То же самое: расстояние по X, игнорируя Y
         isPlayerInAttackRange = (dist <= attackRadius);
 
         if (!isAttacking)
@@ -126,7 +153,8 @@ public class Sword : MonoBehaviour
     // Вызывается из анимации
     private void OnAttackHit()
     {
-        if (isPlayerInAttackRange)
+        // Если игрок физически в коллайдере удара
+        if (isPlayerInHitbox)
         {
             health?.TakeDamage();
         }
@@ -159,7 +187,10 @@ public class Sword : MonoBehaviour
         Vector2 direction = (playerTransform.position - transform.position).normalized;
         rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
     }
-
+    public void SetPlayerInAttackZone(bool value)
+    {
+        isPlayerInHitbox = value;
+    }
     private void StopMovement()
     {
         rb.velocity = Vector2.zero;
