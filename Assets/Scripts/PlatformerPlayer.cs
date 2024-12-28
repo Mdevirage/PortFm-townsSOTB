@@ -28,6 +28,7 @@ public class PlatformerPlayer : MonoBehaviour
     private HealthManager healthManager;
     public bool isJumping = false;
 
+    public bool keyReleasedRecently = false;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -46,6 +47,21 @@ public class PlatformerPlayer : MonoBehaviour
 
     void Update()
     {
+        if ((Input.GetKeyUp(KeyCode.RightArrow) ^ Input.GetKeyUp(KeyCode.LeftArrow)) || isJumping)
+        {
+            if (!keyReleasedRecently)
+            {
+                healthManager.button = false;
+                StartCoroutine(ResetKeyReleased());
+            }
+        }
+        if (healthManager.button)
+        {
+            body.velocity = new Vector2(0, body.velocity.y);
+            anim.SetFloat("Speed", 0);
+            return;
+        }
+        if (healthManager.isDead) {  return; }
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("TakeDamageStanding")) 
         {
@@ -53,17 +69,6 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);
             return; 
         }
-        
-        if (Input.GetKeyUp(KeyCode.RightArrow) || isJumping)
-        {
-           healthManager.button = false;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) || isJumping)
-        {
-            healthManager.button = false;
-        }
-        if (healthManager.isDead) {  return; }
-
         if ((combatSystem.isAttacking || combatSystem.isAttackingReverse))
         {
             if (!combatSystem.isAttackingJumping)
@@ -83,12 +88,7 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", 0);
             return;
         }
-        if (healthManager.button)
-        {
-            body.velocity = new Vector2(0, body.velocity.y);
-            anim.SetFloat("Speed", 0);
-            return;
-        }
+        
 
         // Если персонаж лазает по лестнице, блокируем управление движением и прыжки
         if (Ladder.isClimbing)
@@ -124,12 +124,16 @@ public class PlatformerPlayer : MonoBehaviour
             {
                 landingSound.PlayLandingSound();
                 isFalling = false;
+                isJumping = false;
+                body.velocity = new Vector2(0, body.velocity.y);
+                EndJump();
             }
             else
             {
+                body.velocity = new Vector2(0, body.velocity.y);
                 landingSound.PlayLandingSound();
                 isJumping = false;
-                healthManager.hasJumpCollision = false;
+                EndJump();
             }
         }
         if (grounded != wasGrounded)
@@ -171,8 +175,9 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetTrigger("IsJumping");
             isFalling = true;
             // Устанавливаем фиксированную скорость падения
-            float fixedFallSpeed = -20f; // Фиксированная скорость падения
+            float fixedFallSpeed = -15f; // Фиксированная скорость падения
             body.velocity = new Vector2(0, fixedFallSpeed);
+            EndJump();
         }
 
         // Повороты и движения
@@ -186,11 +191,11 @@ public class PlatformerPlayer : MonoBehaviour
                 anim.SetTrigger("Turn");
             }
         }
-        
+
         if (!isTurning && grounded)
         {
             anim.SetFloat("Speed", Mathf.Abs(deltaX));
-            body.velocity = movement;
+            body.velocity = new Vector2(Mathf.Clamp(movement.x, -speed, speed), body.velocity.y);
         }
         if (!Input.GetKey(KeyCode.X)){
             // Прыжок
@@ -200,6 +205,7 @@ public class PlatformerPlayer : MonoBehaviour
                 anim.SetTrigger("IsJumping");
                 body.velocity = new Vector2(body.velocity.x, 0);
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
+                StartJump();
             }
         }
         // Движение на движущейся платформе
@@ -271,9 +277,19 @@ public class PlatformerPlayer : MonoBehaviour
 
     public void EndTurn()
     {
-        //Debug.Log("IsTurning False");
+        Debug.Log("IsTurning False");
         isTurning = false;
         previousDirection = transform.localScale.x;
+    }
+
+    private void StartJump()
+    {
+        gameObject.layer = LayerMask.NameToLayer("JumpingPlayer");
+    }
+    private void EndJump()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        healthManager.hasJumpCollision = false;
     }
 
     public void UnlockMovement()
@@ -286,9 +302,14 @@ public class PlatformerPlayer : MonoBehaviour
         if (box != null)
         {
             Vector2 boxCenter = new Vector2(box.bounds.center.x, box.bounds.min.y);
-            Vector2 boxSize = new Vector2(box.bounds.size.x-0.25f, 0.1f);
+            Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
             Gizmos.DrawWireCube(boxCenter + (Vector2.down * 0.1f / 2), boxSize);
         }
     }
-
+    public IEnumerator ResetKeyReleased()
+    {
+        keyReleasedRecently = true;
+        yield return new WaitForSeconds(0.2f); // Настройте время задержки
+        keyReleasedRecently = false;
+    }
 }

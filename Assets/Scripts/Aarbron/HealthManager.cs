@@ -51,7 +51,6 @@ public class HealthManager : MonoBehaviour
         {
             return; // Если уже было засчитано столкновение, не увеличиваем счётчик
         }
-
         foreach (ContactPoint2D contact in collision.contacts)
         {
             Vector2 normal = contact.normal;
@@ -70,18 +69,12 @@ public class HealthManager : MonoBehaviour
                     {
                         hasJumpCollision = true; // Устанавливаем флаг столкновения в прыжке
                     }
-
                     break;
                 }
             }
         }
     }
 
-    /// <summary>
-    /// Возвращает true, если игрок жмёт кнопку "вперёд" ровно в ту сторону, где стена.
-    /// Допустим, если стена справа, а игрок нажал Horizontal > 0,
-    /// это значит «давим вперёд».
-    /// </summary>
     bool IsPressingForwardIntoWall(bool wallOnLeft, bool wallOnRight)
     {
         float inputX = 0;
@@ -97,9 +90,13 @@ public class HealthManager : MonoBehaviour
             inputX = 1;
             // Логика «одноразового» нажатия вправо
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+        if ((Input.GetKeyUp(KeyCode.RightArrow) ^ Input.GetKeyUp(KeyCode.LeftArrow)))
         {
-            button = false;
+            if (!playerCode.keyReleasedRecently)
+            {
+                button = false;
+                StartCoroutine(playerCode.ResetKeyReleased());
+            }
         }
 
         // Если стена слева, значит "вперёд" = inputX < 0
@@ -167,9 +164,6 @@ public class HealthManager : MonoBehaviour
         PlayDamageSound();
     }
 
-    /// <summary>
-    /// Реальный урон (минус 1 здоровье). Логика из вашего кода.
-    /// </summary>
     public void TakeDamage()
     {
         if (isDead || isInvincible) return; // Не получаем урон, если мертвы или неуязвимы
@@ -184,8 +178,8 @@ public class HealthManager : MonoBehaviour
         // Если здоровье упало ниже 0 — смерть
         if (!isDead && Starthealth <= 0)
         {
-            Die();
             isDead = true;
+            Die();
             playerCode.body.velocity = Vector2.zero;
         }
 
@@ -244,11 +238,11 @@ public class HealthManager : MonoBehaviour
         yield return new WaitForSeconds(invincibilityDuration);
         isInvincible = false;
     }
-
     public void Kill()
     {
         if (isDead) return;
         Starthealth = 0;
+        isDead = true;
         numberStringDisplay.SetDoubleDigitNumber(Starthealth);
         PlayDamageSound();
         Die();

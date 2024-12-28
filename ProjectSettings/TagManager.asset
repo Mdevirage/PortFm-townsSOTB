@@ -23,8 +23,8 @@ TagManager:
   - ClimbingPlayer
   - Wall
   - Enemy
-  - 
-  - 
+  - JumpingPlayer
+  - ShotLayer
   - 
   - 
   - 
