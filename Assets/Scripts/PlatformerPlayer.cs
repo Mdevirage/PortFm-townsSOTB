@@ -19,7 +19,7 @@ public class PlatformerPlayer : MonoBehaviour
     private Vector2 groundedPosition;
     public float previousDirection;
     private LadderMovement Ladder;  // Ссылка на LadderMovement
-    private LandingSound landingSound;
+    public LandingSound landingSound;
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
     public bool isFalling;
@@ -47,20 +47,6 @@ public class PlatformerPlayer : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKeyUp(KeyCode.RightArrow) ^ Input.GetKeyUp(KeyCode.LeftArrow)) || isJumping)
-        {
-            if (!keyReleasedRecently)
-            {
-                healthManager.button = false;
-                StartCoroutine(ResetKeyReleased());
-            }
-        }
-        if (healthManager.button)
-        {
-            body.velocity = new Vector2(0, body.velocity.y);
-            anim.SetFloat("Speed", 0);
-            return;
-        }
         if (healthManager.isDead) {  return; }
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("TakeDamageStanding")) 
@@ -130,8 +116,11 @@ public class PlatformerPlayer : MonoBehaviour
             }
             else
             {
+                if (isJumping) 
+                {
+                    landingSound.PlayLandingSound();
+                }
                 body.velocity = new Vector2(0, body.velocity.y);
-                landingSound.PlayLandingSound();
                 isJumping = false;
                 EndJump();
             }
@@ -286,10 +275,9 @@ public class PlatformerPlayer : MonoBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("JumpingPlayer");
     }
-    private void EndJump()
+    public void EndJump()
     {
         gameObject.layer = LayerMask.NameToLayer("Player");
-        healthManager.hasJumpCollision = false;
     }
 
     public void UnlockMovement()

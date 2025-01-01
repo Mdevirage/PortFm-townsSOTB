@@ -20,13 +20,17 @@ public class Sphere : MonoBehaviour
     private bool isJumping = false; // Флаг прыжка
     private bool Isdead = false;
 
+    private AudioSource audioSource;
+
     void Start()
     {
         currentHealth = maxHealth; // Устанавливаем начальное количество жизней
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>(); // Инициализируем Rigidbody2D
         sphereCollider = GetComponent<Collider2D>();
+        audioSource = GetComponent<AudioSource>();
         rb.isKinematic = true; // Устанавливаем Rigidbody как Kinematic
+
     }
 
     public void TakeDamage()
@@ -48,6 +52,7 @@ public class Sphere : MonoBehaviour
         Isdead = true;
         DemonAnimator.SetTrigger("End");
         sphereCollider.enabled = false;
+        audioSource.Play();
         firingObject.SetActive(false);
         if (playerCombatSystem != null)
         {

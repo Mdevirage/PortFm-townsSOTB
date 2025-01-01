@@ -26,12 +26,18 @@ public class LadderMovement : MonoBehaviour
     private CinemachineFramingTransposer framingTransposer;
     private LandingSound landingSound;
     private CombatSystem combatSystem;
+    private BoxCollider2D box;
+
+    private Vector2 originalColliderSize;
+    private Vector2 originalColliderOffset;
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        box = GetComponent<BoxCollider2D>();
         framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        //cameraManager = FindObjectOfType<CameraManager>();
+        originalColliderSize = box.size;
+        originalColliderOffset = box.offset;
         playerLayer = LayerMask.NameToLayer("Player");
         climbingPlayerLayer = LayerMask.NameToLayer("ClimbingPlayer");
         groundLayer = LayerMask.NameToLayer("groundLayer");
@@ -241,7 +247,7 @@ public class LadderMovement : MonoBehaviour
         transform.position = new Vector2(previousPositionX, transform.position.y);
         isClimbing = false;
         isExitingClimb = false;
-        
+        PlayerColliderResize(true);
         SmoothObject.transform.SetParent(null);
         framingTransposer.m_ScreenY = 0.5773f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
@@ -255,6 +261,7 @@ public class LadderMovement : MonoBehaviour
         // Этот метод вызывается анимацией после её завершения
         isClimbing = false;
         isExitingClimb = false;
+        PlayerColliderResize(true);
         transform.position = new Vector2(previousPositionX, transform.position.y);
         framingTransposer.m_ScreenY = 0.5773f;
         framingTransposer.m_SoftZoneHeight = 0.5f;
@@ -409,11 +416,25 @@ public class LadderMovement : MonoBehaviour
             //Debug.Log($"ApproachDirection {approachDirection}");
         }
     }
+
     public void MoveToPosition(Vector3 targetPosition, float duration)
     {
         StartCoroutine(SmoothMove(SmoothObject.transform.position, targetPosition, duration));
     }
 
+    public void PlayerColliderResize(bool outWalls)
+    {
+        if (outWalls)
+        {
+            box.size = new Vector2(0.05f, originalColliderSize.y);
+        }
+        else
+        {
+            box.size = originalColliderSize;
+            box.offset = originalColliderOffset;
+        }
+        
+    }
     private IEnumerator SmoothMove(Vector3 startPosition, Vector3 endPosition, float duration)
     {
         float elapsedTime = 0f;
