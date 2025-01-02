@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class HealthManager : MonoBehaviour
 {
@@ -30,8 +32,22 @@ public class HealthManager : MonoBehaviour
         anim = GetComponent<Animator>();
         combatSystem = GetComponent<CombatSystem>();
         numberStringDisplay.SetDoubleDigitNumber(Starthealth);
-
         audioSource = gameObject.AddComponent<AudioSource>(); // Инициализируем AudioSource
+    }
+    public void TakeDamageBoss()
+    {
+        if (isDead || isInvincible) return; // Не получаем урон, если мертвы или неуязвимы
+
+        Starthealth -= 1;
+        numberStringDisplay.SetDoubleDigitNumber(Starthealth);
+
+        // Если здоровье упало ниже 0 — смерть
+        if (!isDead && Starthealth <= 0)
+        {
+            isDead = true;
+            Die();
+            playerCode.body.velocity = Vector2.zero;
+        }
     }
     public void TakeDamage()
     {
@@ -125,6 +141,8 @@ public class HealthManager : MonoBehaviour
 
     public void OnDeathAnimationComplete()
     {
+        Screen.SetResolution(640, 480, false);
+        SceneManager.LoadScene("DeathScene"); // Переключение на сцену с видео
         gameObject.SetActive(false);
     }
 

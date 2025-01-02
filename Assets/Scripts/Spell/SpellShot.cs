@@ -6,11 +6,13 @@ public class SpellShot : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private bool hasCollided = false; // Флаг для предотвращения повторного вызова анимации
-
+    private AudioSource audioSource;
+    public AudioClip[] possibleClips; // Массив аудиоклипов, один из которых выбирается случайно
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void ActivateMovement()
@@ -50,6 +52,18 @@ public class SpellShot : MonoBehaviour
                 if (animator != null)
                 {
                     animator.SetTrigger("Explode"); // Запускаем анимацию
+                                                    // Если есть хотя бы один клип
+                    if (possibleClips != null && possibleClips.Length > 0)
+                    {
+                        // Выбираем случайный индекс
+                        int randomIndex = Random.Range(0, possibleClips.Length);
+
+                        // Подставляем его в AudioSource
+                        audioSource.clip = possibleClips[randomIndex];
+
+                        // Проигрываем звук
+                        audioSource.Play();
+                    }
                 }
                 else
                 {

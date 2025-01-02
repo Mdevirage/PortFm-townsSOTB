@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/VideoScene.unity
+    guid: 616763bae5d682a469b99be89efd458b
+  - enabled: 1
+    path: Assets/Scenes/TreeWest.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/DeathScene.unity
+    guid: ac51d2cd750531744a07402aacc0fd05
   m_configObjects: {}
