@@ -13,15 +13,23 @@ public class HealthBasedAnimationController : MonoBehaviour
             return;
         }
 
-        if (healthManager.Starthealth <= 5)
+        if (healthManager.Starthealth <= 20)
         {
             // Ускоряем анимацию при низком уровне здоровья
-            animator.speed = 1.5f; // Ускорение (настройте по желанию)
+            animator.speed = 1.125f; // Ускорение (настройте по желанию)
         }
-        else
+        else if (healthManager.Starthealth <= 15)
         {
             // Возвращаем стандартную скорость анимации
-            animator.speed = 1f; // Нормальная скорость
+            animator.speed = 1.25f; // Нормальная скорость
+        }
+        else if (healthManager.Starthealth <= 10)
+        {
+            animator.speed = 1.5f;
+        }
+        else if(healthManager.Starthealth <= 5)
+        {
+            animator.speed = 1.75f;
         }
     }
 }

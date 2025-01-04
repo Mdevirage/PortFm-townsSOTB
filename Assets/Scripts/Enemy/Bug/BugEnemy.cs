@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Axe : MonoBehaviour
+public class BugEnemy : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float speed = 4f;
@@ -25,20 +25,15 @@ public class Axe : MonoBehaviour
     private Rigidbody2D rb;
     public Transform playerTransform;
     public HealthManager health;
-
-    private AudioSource audioSource;
     private bool wasInCameraView = false;
 
     private bool isAttacking;
     private bool isPlayerInAttackRange;
     private bool isPlayerInHitbox;
-    // ...
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
         lastAttackTime = -attackCooldown;
     }
 
@@ -54,7 +49,6 @@ public class Axe : MonoBehaviour
         if (isInCameraView && !wasInCameraView)
         {
             // Объект только что стал видим
-            audioSource?.Play();
             wasInCameraView = true;
         }
         else if (!isInCameraView && wasInCameraView)
@@ -178,8 +172,8 @@ public class Axe : MonoBehaviour
     }
     private void MoveTowardsPlayer()
     {
-        Vector2 direction = (playerTransform.position - transform.position).normalized;
-        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+        //Vector2 direction = (playerTransform.position - transform.position).normalized;
+        rb.velocity = new Vector2(-1 * speed, rb.velocity.y);
     }
     public void SetPlayerInAttackZone(bool value)
     {
@@ -190,6 +184,4 @@ public class Axe : MonoBehaviour
         rb.velocity = Vector2.zero;
         animator.SetBool("IsMoving", false);
     }
-
-    // ...
 }

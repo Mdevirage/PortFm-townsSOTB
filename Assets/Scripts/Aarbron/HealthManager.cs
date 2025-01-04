@@ -108,6 +108,11 @@ public class HealthManager : MonoBehaviour
         PlayDamageSound();
     }
 
+    public void HPPotion()
+    {
+        Starthealth = 24;
+        numberStringDisplay.SetDoubleDigitNumber(Starthealth);
+    }
     public void PlayDamageSound()
     {
         if (damageSounds.Length > 0)

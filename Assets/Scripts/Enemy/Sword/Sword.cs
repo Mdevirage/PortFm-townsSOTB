@@ -184,8 +184,8 @@ public class Sword : MonoBehaviour
     }
     private void MoveTowardsPlayer()
     {
-        Vector2 direction = (playerTransform.position - transform.position).normalized;
-        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+        //Vector2 direction = (playerTransform.position - transform.position).normalized;
+        rb.velocity = new Vector2(-1 * speed, rb.velocity.y);
     }
     public void SetPlayerInAttackZone(bool value)
     {

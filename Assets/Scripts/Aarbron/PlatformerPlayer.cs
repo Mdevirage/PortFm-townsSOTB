@@ -27,8 +27,7 @@ public class PlatformerPlayer : MonoBehaviour
     public bool isMovementLocked = false;
     private HealthManager healthManager;
     public bool isJumping = false;
-
-    public bool keyReleasedRecently = false;
+    public bool isMoveTrigger = false;
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -47,6 +46,10 @@ public class PlatformerPlayer : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z) && Mathf.Abs(Input.GetAxis("Horizontal")) >= 1)
+        {
+            isMoveTrigger = false;
+        }
         if (healthManager.isDead) {  return; }
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("TakeDamageStanding")) 
@@ -146,9 +149,17 @@ public class PlatformerPlayer : MonoBehaviour
         }
 
         float deltaX = Input.GetAxis("Horizontal") * speed;
-        Vector2 movement = new Vector2(deltaX, body.velocity.y);
+        Vector2 movement;
+        if (!isMoveTrigger) 
+        {
+            movement = new Vector2(deltaX, body.velocity.y);
+        }
+        else
+        {
+            movement = new Vector2(0, body.velocity.y);
+        }
+       
         
-
         if (grounded)
         {
             groundedPosition = transform.position;
@@ -293,11 +304,5 @@ public class PlatformerPlayer : MonoBehaviour
             Vector2 boxSize = new Vector2(box.bounds.size.x, 0.1f);
             Gizmos.DrawWireCube(boxCenter + (Vector2.down * 0.1f / 2), boxSize);
         }
-    }
-    public IEnumerator ResetKeyReleased()
-    {
-        keyReleasedRecently = true;
-        yield return new WaitForSeconds(0.2f); // Настройте время задержки
-        keyReleasedRecently = false;
     }
 }

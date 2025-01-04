@@ -1,99 +1,158 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class Dragonfly : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float speed = 2f;
-    public float amplitude = 1f;
+    public float minX = 10f;
+    public float maxX = 26f;
+    public float upperY = -4.25f;
+    public float lowerY = -5.75f;
+    public float speed = 5f;
     public float frequency = 1f;
-    public float minX = -5f;
-    public float maxX = 5f;
+    public float amplitude = 1.25f;
 
-    [Header("Attack Settings")]
-    public float attackCooldown = 1f;
-    private float lastAttackTime;
+    private int directionX = 1;
+    private bool isOnUpperWave = true; // Текущее положение: верхняя или нижняя синусоида
+    private bool isSwitchingWave = false; // В процессе переключения между уровнями
+    private Animator animator;
 
-    [Header("Animation Settings")]
-    public Animator animator;
-
-    private float offset;
-    private bool moveRight = true;
-    private bool isTurning = false;
+    [Header("Death Settings")]
+    public GameObject deathEffect;
 
     void Start()
     {
-        offset = transform.position.x;
+        transform.position = new Vector3(minX, lowerY, transform.position.z);
+        animator = GetComponent<Animator>();
+        UpdateAnimation();
     }
 
     void Update()
     {
-        float waveMovement = amplitude * Mathf.Sin(Time.time * frequency + Time.deltaTime * speed); // Added speed to frequency
-        float targetX = offset + waveMovement;
+        if (isSwitchingWave) return; // Пропускаем обновление, если в процессе переключения
 
-        if (moveRight)
+        float newX = transform.position.x + speed * directionX * Time.deltaTime;
+
+        if (newX >= maxX)
         {
-            if (targetX >= maxX)
-            {
-                StartTurnAnimation();
-                moveRight = false;
-            }
-            else
-            {
-                PlayMoveAnimation();
-            }
+            newX = maxX;
+            directionX = -1;
+            SwitchWave(); // Переход на другую синусоиду
+        }
+        else if (newX <= minX)
+        {
+            newX = minX;
+            directionX = 1;
+            SwitchWave(); // Переход на другую синусоиду
+        }
+
+        float waveOffset = Mathf.Sin(newX * frequency) * amplitude;
+        float yOffset = isOnUpperWave ? upperY + waveOffset : lowerY + waveOffset;
+
+        transform.position = new Vector3(newX, yOffset, transform.position.z);
+    }
+
+    void SwitchWave()
+    {
+        isSwitchingWave = true;
+        if (directionX == 1)
+        {
+            animator.Play("FlyTurnv3L");
         }
         else
         {
-            if (targetX <= minX)
-            {
-                StartTurnAnimation();
-                moveRight = true;
-            }
-            else
-            {
-                PlayMoveAnimation();
-            }
+            animator.Play("FlyTurnv3R");
         }
-
-        transform.position = new Vector2(targetX, transform.position.y); //Directly move the transform
+         // Запуск анимации поворота
+        StartCoroutine(WaitForTurnAnimation());
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator WaitForTurnAnimation()
     {
-        if (collision.CompareTag("Player") && Time.time - lastAttackTime >= attackCooldown)
+        float animationLength = 0.25f;
+        float halfDuration = animationLength / 2f; // Делим время на два этапа
+
+        // Начальная позиция
+        Vector3 startPosition = transform.position;
+        
+        // --- Первый этап: движение по диагонали вверх ---
+        Vector3 firstEndPosition = startPosition + new Vector3(-0.5f * directionX, 0.5f * directionX, 0); // Смещение вверх
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < halfDuration)
         {
-            HealthManager playerHealth = collision.GetComponent<HealthManager>();
+            // Интерполяция между стартовой и конечной точкой первого этапа
+            transform.position = Vector3.Lerp(startPosition, firstEndPosition, elapsedTime / halfDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Убедимся, что объект находится в конечной позиции первого этапа
+        transform.position = firstEndPosition;
+
+        // --- Второй этап: движение по диагонали вниз ---
+        Vector3 secondEndPosition = firstEndPosition + new Vector3(0.5f * directionX, 0.5f * directionX, 0); // Смещение вниз
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < halfDuration)
+        {
+            // Интерполяция между конечной точкой первого этапа и конечной точкой второго этапа
+            transform.position = Vector3.Lerp(firstEndPosition, secondEndPosition, elapsedTime / halfDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Убедимся, что объект находится в конечной позиции второго этапа
+        transform.position = secondEndPosition;
+
+        // Завершаем процесс переключения
+        isSwitchingWave = false;
+        isOnUpperWave = !isOnUpperWave; // Переключаем синусоиду
+        UpdateAnimation(); // Обновляем анимацию движения
+    }
+
+    void UpdateAnimation()
+    {
+        if (animator != null)
+        {
+            if (directionX == 1) // Движение вправо
+            {
+                animator.SetInteger("Direction", 1);
+                animator.Play("FlyRight");
+            }
+            else if (directionX == -1) // Движение влево
+            {
+                animator.SetInteger("Direction", -1);
+                animator.Play("FlyLeft");
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            HealthManager playerHealth = other.GetComponent<HealthManager>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage();
-                lastAttackTime = Time.time;
             }
         }
     }
 
-    private void PlayMoveAnimation()
+    public void TakeDamage()
     {
-        if (animator && !isTurning)
-        {
-            animator.Play("WaveMove");
-        }
+        Die();
     }
 
-    private void StartTurnAnimation()
+    private void Die()
     {
-        if (animator)
+        if (deathEffect != null)
         {
-            animator.Play("Turn");
-            isTurning = true;
-            Invoke("EndTurnAnimation", animator.GetCurrentAnimatorStateInfo(0).length);
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
-    }
-
-    private void EndTurnAnimation()
-    {
-        isTurning = false;
+        Destroy(gameObject);
     }
 }
