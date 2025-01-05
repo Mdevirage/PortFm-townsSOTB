@@ -70,12 +70,26 @@ public class LadderMovement : MonoBehaviour
             //Debug.Log($"Vertical Input {verticalInput}");
             if (isClimbing)
             {
-
+                int direct;
                 // Устанавливаем параметр ClimbSpeed для управления анимацией
-                anim.SetFloat("ClimbSpeed", verticalInput);
+                
+                if(verticalInput > 0)
+                {
+                    direct = 1;
+                }
+                else
+                {
+                    direct = -1;
+                }
+                anim.SetFloat("ClimbSpeed", direct);
 
-                // Обновляем скорость перемещения персонажа
-                body.velocity = new Vector2(0, verticalInput * climbSpeed);
+                body.velocity = new Vector2(0, direct * climbSpeed);
+
+                // Привязываем позицию к пиксельной сетке
+                Vector3 position = body.position; // Берем текущую позицию Rigidbody2D
+                position.x = Mathf.Round(position.x * 32) / 32;
+                position.y = Mathf.Round(position.y * 32) / 32;
+                body.position = position; // Устанавливаем скорректированную позицию
 
                 if (math.abs(verticalInput) <= 0.99999)
                 {
@@ -426,7 +440,7 @@ public class LadderMovement : MonoBehaviour
     {
         if (outWalls)
         {
-            box.size = new Vector2(0.05f, originalColliderSize.y);
+            box.size = new Vector2(0.1f, originalColliderSize.y);
         }
         else
         {

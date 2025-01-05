@@ -146,7 +146,6 @@ public class HealthManager : MonoBehaviour
 
     public void OnDeathAnimationComplete()
     {
-        Screen.SetResolution(640, 480, false);
         SceneManager.LoadScene("DeathScene"); // Переключение на сцену с видео
         gameObject.SetActive(false);
     }

@@ -1,43 +1,43 @@
 using UnityEngine;
 
-/// <summary>
-/// Скрипт, объединяющий:
-/// 1) Считывание нажатий (Input) в Update()
-/// 2) Логику обнаружения "удара о стену" (OnCollisionEnter2D / OnCollisionStay2D)
-/// 3) Одноразовые удары с блокировкой движения
-/// 4) Пример "один удар за прыжок" (jumpWallHitUsed)
-/// 5) Отнятие здоровья через HealthManager
-/// 6) Логику "lockedDirection", чтобы разблокироваться при смене/отпускании нужной кнопки
-/// </summary>
 [RequireComponent(typeof(PlatformerPlayer))]
 [RequireComponent(typeof(HealthManager))]
 public class WallHitHandler : MonoBehaviour
 {
     [Header("Wall Hit Settings")]
-    public int wallHitThreshold = 5;      // Порог, при котором наносится урон
+    public int wallHitThreshold = 5;      // Порог для применения урона
     private int wallHitCount;             // Текущий счётчик ударов
 
-    // Если хотим только один удар за прыжок, используем этот флаг
+    // Если требуется только один удар за прыжок, используем этот флаг
     private bool jumpWallHitUsed = false;
 
     // Флаг: движение заблокировано из-за удара о стену
     private bool lockedByWallHit = false;
 
-    // -1 = персонаж "прилип" к стене слева (нажимали левую кнопку)
-    // +1 = к стене справа (нажимали правую)
+    // -1 = персонаж "прилип" к левой стене (удерживает левую кнопку)
+    // +1 = к правой стене (удерживает правую)
     //  0 = нет блокировки или не определено
     private int lockedDirection = 0;
+
     // Ссылки на другие компоненты
     private PlatformerPlayer player;
     private HealthManager healthManager;
 
-    // ------------------------------
-    // Поля для "буфера ввода":
-    // ------------------------------
+    // Поля для "буфера ввода"
     private bool pressLeftKeyDown;
     private bool pressRightKeyDown;
     private bool holdLeftKey;
     private bool holdRightKey;
+
+    [Header("Wall Detection Settings")]
+    public float wallCheckDistance = 0.1f; // Дистанция для проверки стен
+    public LayerMask wallLayerMask;        // Маска слоя для идентификации стен
+    public Vector2 wallCheckOffsetLeft = new Vector2(-0.5f, 0f);  // Смещение для левостороннего raycast
+    public Vector2 wallCheckOffsetRight = new Vector2(0.5f, 0f);  // Смещение для правостороннего raycast
+
+    // Добавленные флаги для отслеживания обработанных столкновений
+    private bool leftWallHitProcessed = false;
+    private bool rightWallHitProcessed = false;
 
     void Awake()
     {
@@ -46,127 +46,79 @@ public class WallHitHandler : MonoBehaviour
         healthManager = GetComponent<HealthManager>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // ========= 1) Считываем ввод (буфер ввода) =========
+        // ========= 1) Считываем ввод (Буфер ввода) =========
+        // Используем Input в Update(), но поскольку физические обновления в FixedUpdate, можно кэшировать ввод
 
-        // Одноразовые нажатия (работают ровно один кадр):
+        // Одноразовые нажатия
         pressLeftKeyDown = Input.GetKeyDown(KeyCode.LeftArrow);
         pressRightKeyDown = Input.GetKeyDown(KeyCode.RightArrow);
 
-        // Удержание (работают, пока кнопка нажата):
+        // Удержание кнопок
         holdLeftKey = Input.GetKey(KeyCode.LeftArrow);
         holdRightKey = Input.GetKey(KeyCode.RightArrow);
 
-        // ========= 2) Логика "один раз за прыжок" =========
-
-        // Если персонаж приземлился и был в прыжке — сбрасываем флаг
+        // ========= 2) Обработка Сброса Прыжка =========
         if (player.IsGrounded() && player.isJumping && jumpWallHitUsed)
         {
             player.isJumping = false;
-            // Обнуляем анимацию (примерно так):
             healthManager.anim.SetBool("IsGrounded", true);
-            // Звук приземления, если нужно
             player.landingSound.PlayLandingSound();
             jumpWallHitUsed = false;
         }
 
-        // ========= 3) Разблокировка движения по отпусканию "той" кнопки =========
-        if (lockedByWallHit)
-        {
-            // Если "прилипли" слева
-            if (lockedDirection == -1)
-            {
-                // Пока держим левую кнопку, остаёмся заблокированными.
-                // Как только отпустили её — разблокируемся.
-                if (!holdLeftKey)
-                {
-                    lockedByWallHit = false;
-                    lockedDirection = 0;
-                    player.isMovementLocked = false;
-                }
-            }
-            // Если "прилипли" справа
-            else if (lockedDirection == +1)
-            {
-                if (!holdRightKey)
-                {
-                    lockedByWallHit = false;
-                    lockedDirection = 0;
-                    player.isMovementLocked = false;
-                }
-            }
-            else
-            {
-                // Если lockedDirection == 0 (теоретически не должно быть),
-                // но если вдруг, можно разблокировать:
-                lockedByWallHit = false;
-                player.isMovementLocked = false;
-            }
-        }
+        // ========= 3) Разблокировка Движения, если Необходимо =========
+        HandleMovementUnlock();
+
+        // ========= 4) Постоянное Обнаружение Стен =========
+        DetectWalls();
     }
 
-    // Срабатывает при первом входе в коллизию со стеной
-    private void OnCollisionEnter2D(Collision2D collision)
+    /// <summary>
+    /// Обнаруживает стены с обеих сторон с помощью raycasts.
+    /// </summary>
+    private void DetectWalls()
     {
-        if (!collision.gameObject.CompareTag("Wall")) return;
+        // Определяем исходные точки для raycasts на основе позиции игрока
+        Vector2 originLeft = (Vector2)transform.position + wallCheckOffsetLeft;
+        Vector2 originRight = (Vector2)transform.position + wallCheckOffsetRight;
 
-        // Перебираем точки контакта
-        foreach (ContactPoint2D contact in collision.contacts)
+        // Выполняем raycasts влево и вправо
+        RaycastHit2D hitLeft = Physics2D.Raycast(originLeft, Vector2.left, wallCheckDistance, wallLayerMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(originRight, Vector2.right, wallCheckDistance, wallLayerMask);
+
+        // Отладочные лучи (опционально, для визуализации)
+        Debug.DrawRay(originLeft, Vector2.left * wallCheckDistance, Color.red);
+        Debug.DrawRay(originRight, Vector2.right * wallCheckDistance, Color.blue);
+
+        bool wallOnLeft = hitLeft.collider != null;
+        bool wallOnRight = hitRight.collider != null;
+
+        // Проверяем, удерживает ли игрок кнопку против стены и не было ли уже обработано столкновение
+        bool isPushingWallLeft = wallOnLeft && holdLeftKey && !leftWallHitProcessed;
+        bool isPushingWallRight = wallOnRight && holdRightKey && !rightWallHitProcessed;
+
+        if (isPushingWallLeft || isPushingWallRight)
         {
-            Vector2 normal = contact.normal;
-            // Проверяем, что стена сбоку (почти горизонтальная нормаль)
-            if (Mathf.Abs(normal.x) > 0.5f)
+            if (isPushingWallLeft)
             {
-                bool wallOnLeft = (normal.x > 0);
-                bool wallOnRight = (normal.x < 0);
-
-                // Держит ли игрок уже кнопку?
-                bool isPushingWall =
-                    (wallOnLeft && holdLeftKey) ||
-                    (wallOnRight && holdRightKey);
-
-                if (isPushingWall)
-                {
-                    HandleWallCollision();
-                    break;
-                }
+                HandleWallCollision(-1);
+                leftWallHitProcessed = true; // Устанавливаем флаг
             }
-        }
-    }
-
-    // Срабатывает каждый кадр, пока персонаж остаётся в коллизии со стеной
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (!collision.gameObject.CompareTag("Wall")) return;
-
-        foreach (ContactPoint2D contact in collision.contacts)
-        {
-            Vector2 normal = contact.normal;
-            if (Mathf.Abs(normal.x) > 0.5f)
+            if (isPushingWallRight)
             {
-                bool wallOnLeft = (normal.x > 0);
-                bool wallOnRight = (normal.x < 0);
-
-                // Новое нажатие (одноразовое) при удерживании стены
-                bool isPushingWall =
-                    (wallOnLeft && pressLeftKeyDown) ||
-                    (wallOnRight && pressRightKeyDown);
-
-                if (isPushingWall)
-                {
-                    HandleWallCollision();
-                    break;
-                }
+                HandleWallCollision(+1);
+                rightWallHitProcessed = true; // Устанавливаем флаг
             }
         }
     }
 
     /// <summary>
-    /// Вызывается, если определили, что игрок "упирается" в стену
-    /// (при входе или при новом нажатии).
+    /// Обрабатывает логику столкновения со стеной на основе направления.
     /// </summary>
-    private void HandleWallCollision()
+    /// <param name="direction">-1 для левой, +1 для правой стороны</param>
+    private void HandleWallCollision(int direction)
     {
         if (player.isJumping)
         {
@@ -174,54 +126,47 @@ public class WallHitHandler : MonoBehaviour
             if (!jumpWallHitUsed)
             {
                 jumpWallHitUsed = true;
-                IncrementWallHit();
+                IncrementWallHit(direction);
             }
         }
         else
         {
-            IncrementWallHit();
+            IncrementWallHit(direction);
         }
     }
 
     /// <summary>
-    /// Увеличиваем счётчик "ударов о стену", наносим урон при достижении порога
-    /// и блокируем движение до отпускания "той" кнопки, которая вызвала удар.
+    /// Увеличивает счётчик ударов о стену, наносит урон при достижении порога и блокирует движение.
     /// </summary>
-    private void IncrementWallHit()
+    /// <param name="direction">Направление удара о стену (-1 или +1)</param>
+    private void IncrementWallHit(int direction)
     {
         wallHitCount++;
         Debug.Log($"WallHitCount = {wallHitCount}");
-
-        // --- Определяем, какой стрелкой мы врезались --- 
-        // Если holdLeftKey == true, значит удар слева; если holdRightKey == true, значит справа
-        if (holdLeftKey && !holdRightKey)
-        {
-            lockedDirection = -1; // Врезались, удерживая левую
-        }
-        else if (holdRightKey && !holdLeftKey)
-        {
-            lockedDirection = +1; // Удерживали правую
-        }
-        else
-        {
-            // Если нажаты обе кнопки или что-то странное, можно взять
-            // сторону стены из OnCollisionStay, но для примера упростим:
-            lockedDirection = 0;
-        }
-
+        player.EndJump();
         // Блокируем движение
         lockedByWallHit = true;
         player.isMovementLocked = true;
 
-        // Если достигли порога — наносим урон
+        // Определяем направление блокировки на основе ввода
+        lockedDirection = direction;
+
+        if (player.isTurning)
+        {
+            player.isTurning = false;
+            player.previousDirection = transform.localScale.x;
+            player.isCrouching = false;
+        }
+
+        // Применяем урон, если достигнут порог
         if (wallHitCount >= wallHitThreshold)
         {
-            wallHitCount = 0; // сбрасываем счётчик
+            wallHitCount = 0; // Сбрасываем счётчик
 
             healthManager.Starthealth -= 1;
             healthManager.numberStringDisplay.SetDoubleDigitNumber(healthManager.Starthealth);
 
-            // Если персонаж умер
+            // Проверяем, умер ли персонаж
             if (!healthManager.isDead && healthManager.Starthealth <= 0)
             {
                 healthManager.Die();
@@ -243,7 +188,7 @@ public class WallHitHandler : MonoBehaviour
         }
         else
         {
-            // Если порог не достигнут — "лёгкая" анимация удара
+            // Играем лёгкую анимацию удара
             if (!player.isJumping)
             {
                 if (player.isCrouching)
@@ -253,5 +198,48 @@ public class WallHitHandler : MonoBehaviour
             }
             healthManager.PlayDamageSound();
         }
+    }
+
+    /// <summary>
+    /// Разблокирует движение игрока, когда соответствующая кнопка отпущена.
+    /// </summary>
+    private void HandleMovementUnlock()
+    {
+        if (lockedByWallHit)
+        {
+            if (lockedDirection == -1 && !holdLeftKey)
+            {
+                UnlockMovement();
+                leftWallHitProcessed = false; // Сбрасываем флаг для левой стороны
+            }
+            else if (lockedDirection == +1 && !holdRightKey)
+            {
+                UnlockMovement();
+                rightWallHitProcessed = false; // Сбрасываем флаг для правой стороны
+            }
+            else if (lockedDirection == 0)
+            {
+                // Граничный случай: разблокировать, если направление неопределено
+                UnlockMovement();
+                leftWallHitProcessed = false;
+                rightWallHitProcessed = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Разблокирует движение игрока.
+    /// </summary>
+    private void UnlockMovement()
+    {
+        lockedByWallHit = false;
+        lockedDirection = 0;
+        player.isMovementLocked = false;
+    }
+
+    void Update()
+    {
+        // Обработка ввода, который необходимо считывать каждый кадр
+        // При необходимости можно переместить обработку ввода сюда вместо FixedUpdate
     }
 }

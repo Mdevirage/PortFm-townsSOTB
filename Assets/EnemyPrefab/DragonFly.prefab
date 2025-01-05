@@ -169,7 +169,7 @@ MonoBehaviour:
   maxX: 26
   upperY: -4.5
   lowerY: -5.5
-  speed: 7
+  speed: 8
   frequency: 1
   amplitude: 1
-  deathEffect: {fileID: 5166196700304428568, guid: 808e495ee466fa04caee3c2742aa7bb1, type: 3}
+  deathEffect: {fileID: 7936015471530598345, guid: 25209fb66bb89cc4394384c213552b5d, type: 3}

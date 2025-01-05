@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058c7d20ad512b340a98dfbf7cff5927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  speed: 3.5
   chaseSpeedMultiplier: 1
   attackCooldown: 0.9
   deathEffect: {fileID: 8857721401354346865, guid: 23d73d070576c704b8a87b97cf549e48, type: 3}
@@ -215,7 +215,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f52c8707f9e5a2b4e80c434b0da8fc31, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

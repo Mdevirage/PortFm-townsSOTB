@@ -79,7 +79,7 @@ public class Drop : MonoBehaviour
     private void CheckCameraView()
     {
         Vector3 viewportPoint = Camera.main.WorldToViewportPoint(new Vector3(transform.position.x, transform.position.y - 1, transform.position.z)); // Смотрим ниже центра объекта
-        isInCameraView = viewportPoint.x >= 0 && viewportPoint.x <= 1 && viewportPoint.y >= 0 && viewportPoint.y <= 1;
+        isInCameraView = viewportPoint.x >= 0 && viewportPoint.x <= 1 && viewportPoint.y >= 0 && viewportPoint.y <= 1.5f;
     }
 
     private IEnumerator PlayAnimationAndTeleport()

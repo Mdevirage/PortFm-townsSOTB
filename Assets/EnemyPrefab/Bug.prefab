@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e55a3f9b7516e4c93575441a8457ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 4
   chaseSpeedMultiplier: 1
   attackCooldown: 1.25
   deathEffect: {fileID: 8857721401354346865, guid: 23d73d070576c704b8a87b97cf549e48, type: 3}
@@ -295,7 +295,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 1.5}
+  m_Size: {x: 2.8, y: 1.5}
   m_EdgeRadius: 0
 --- !u!1 &4366091283235154617
 GameObject:
@@ -401,7 +401,7 @@ Transform:
   m_GameObject: {fileID: 7439849052740773451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.65, y: 0.25, z: 0}
+  m_LocalPosition: {x: -1.5, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -450,7 +450,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &598396346950965052
 MonoBehaviour:
