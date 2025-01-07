@@ -77,6 +77,7 @@ public class CombatSystem : MonoBehaviour
             if (!isAttackingStanding)
             {
                 body.velocity = Vector2.zero;
+                player.EndJump();
                 isAttackingStanding = true;
                 isAttacking = true;
                 animator.SetBool("IsAttackingStanding", true); // ¬ключаем обычную атаку сто€
@@ -111,6 +112,7 @@ public class CombatSystem : MonoBehaviour
             if (!isAttackingCrouching)
             {
                 isAttackingCrouching = true;
+                player.EndJump();
                 isAttacking = true;
                 animator.SetBool("IsAttackingCrouching", true);
             }
@@ -232,6 +234,7 @@ public class CombatSystem : MonoBehaviour
             isAttackingReverse = false;
             animator.SetBool("IsAttackingStanding", false);
             chargeEffectObject.SetActive(false);
+            DeactivateHitBoxStand();
         }
         if (isAttackingCrouching)
         {
@@ -240,6 +243,7 @@ public class CombatSystem : MonoBehaviour
             isAttackingReverse = false;
             animator.SetBool("IsAttackingCrouching", false);
             chargeEffectObject.SetActive(false);
+            DeactivateHitBoxCrounch();
         }
         if (isAttackingJumping)
         {

@@ -2,7 +2,6 @@ using Cinemachine;
 using UnityEngine;
 using System.Collections;
 using Unity.Mathematics;
-using TMPro;
 
 public class LadderMovement : MonoBehaviour
 {
@@ -72,7 +71,7 @@ public class LadderMovement : MonoBehaviour
             {
                 int direct;
                 // Устанавливаем параметр ClimbSpeed для управления анимацией
-                
+
                 if(verticalInput > 0)
                 {
                     direct = 1;
@@ -254,7 +253,7 @@ public class LadderMovement : MonoBehaviour
         // Вызывается по завершении анимации выхода (через событие анимации)
         isExitingClimb = false;
     }
-    
+
     public void OnExitClimbAnimationComplete()
     {
         // Этот метод вызывается анимацией после её завершения
@@ -341,7 +340,7 @@ public class LadderMovement : MonoBehaviour
         SmoothObject.transform.position = new Vector2(previousPositionX, transform.position.y);
         virtualCamera.Follow = SmoothObject.transform;
         Vector3 targetPosition = new Vector3(previousPositionX, transform.position.y - 1.68f, transform.position.z);
-        MoveToPosition(targetPosition, 0.8f);
+        MoveToPosition(targetPosition, 0.5f);
     }
     public void CameraClimbUp()
     {
@@ -358,7 +357,7 @@ public class LadderMovement : MonoBehaviour
         float offset = 0.093f;
         Vector3 targetPosition = new Vector3(previousPositionX, adjustedY-offset, transform.position.z);
         //Vector3 targetPosition = new Vector3(previousPositionX, SmoothObject.transform.position.y + 1.9f, transform.position.z);
-        MoveToPosition(targetPosition, 0.8f);
+        MoveToPosition(targetPosition, 0.5f);
         
     }
     public void DisableTilemap()
@@ -440,7 +439,7 @@ public class LadderMovement : MonoBehaviour
     {
         if (outWalls)
         {
-            box.size = new Vector2(0.1f, originalColliderSize.y);
+            box.size = new Vector2(0.075f, originalColliderSize.y);
         }
         else
         {

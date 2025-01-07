@@ -122,7 +122,7 @@ public class VideoSequenceController : MonoBehaviour
 
     void TransitionToNextScene()
     {
-        //Screen.SetResolution(1024, 800, false);
+        //Screen.SetResolution(1024, 880, false);
         Screen.SetResolution(512, 440, false);
         SceneManager.LoadScene(nextSceneName);
     }
