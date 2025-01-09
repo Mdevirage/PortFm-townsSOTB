@@ -33,6 +33,7 @@ public class CombatSystem : MonoBehaviour
 
     void Update()
     {
+        if (healthManager.isDead) { return; }
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 - индекс слоя
         if (stateInfo.IsName("Aarbron_Turn") || stateInfo.IsName("Aarbron_ClimbUPRevv2") || stateInfo.IsName("Aarbron_descentRevR") ||
             stateInfo.IsName("Aarbron_descentRevL"))
@@ -62,7 +63,7 @@ public class CombatSystem : MonoBehaviour
             ResetAttack(); // Сбрасываем атаку
             return;
         }
-        if (Input.GetKeyUp(KeyCode.X))
+        if (Input.GetButtonUp("Attack"))
         {
             ResetAttack();
         }
@@ -71,7 +72,7 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombatInputStanding()
     {
-        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && !player.isCrouching && !player.isStandingUp && !ladderMovement.isClimbing) // Удар стоя
+        if (Input.GetButton("Attack") && player.IsGrounded() && !player.isCrouching && !player.isStandingUp && !ladderMovement.isClimbing) // Удар стоя
         {
             shootPoint.transform.localPosition = new Vector2(1.78f, 0.6875f);
             if (!isAttackingStanding)
@@ -83,7 +84,7 @@ public class CombatSystem : MonoBehaviour
                 animator.SetBool("IsAttackingStanding", true); // Включаем обычную атаку стоя
             }
         }
-        else if (isAttackingStanding && Input.GetKeyUp(KeyCode.X))
+        else if (isAttackingStanding && Input.GetButtonUp("Attack"))
         {
             if (canSpecialAttack)
             {
@@ -106,7 +107,7 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombatInputCrouching()
     {
-        if (Input.GetKey(KeyCode.X) && player.IsGrounded() && player.isCrouching && !ladderMovement.isClimbing && !player.isTurning) // Удар в приседе
+        if (Input.GetButton("Attack") && player.IsGrounded() && player.isCrouching && !ladderMovement.isClimbing && !player.isTurning) // Удар в приседе
         {
             shootPoint.transform.localPosition = new Vector2(2.0325f, -0.125f);
             if (!isAttackingCrouching)
@@ -117,7 +118,7 @@ public class CombatSystem : MonoBehaviour
                 animator.SetBool("IsAttackingCrouching", true);
             }
         }
-        else if (isAttackingCrouching && Input.GetKeyUp(KeyCode.X))
+        else if (isAttackingCrouching && Input.GetButtonUp("Attack"))
         {
             if (canSpecialAttack)
             {
@@ -149,7 +150,7 @@ public class CombatSystem : MonoBehaviour
         if (inAir && isDescendingOrAtApex && !isAttackingJumping)
         {
             // Если нажата кнопка удара
-            if (Input.GetKey(KeyCode.X) && !player.isTurning)
+            if (Input.GetButton("Attack") && !player.isTurning)
             {
                 isAttackingJumping = true;
                 isAttacking = true;

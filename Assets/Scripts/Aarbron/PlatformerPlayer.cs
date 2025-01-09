@@ -46,7 +46,7 @@ public class PlatformerPlayer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && Mathf.Abs(Input.GetAxis("Horizontal")) >= 1)
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(Input.GetAxis("Horizontal")) >= 1)
         {
             isMoveTrigger = false;
         }
@@ -136,7 +136,7 @@ public class PlatformerPlayer : MonoBehaviour
         //wasGrounded = grounded;
 
         // Приседания
-        if (grounded && (Input.GetKey(KeyCode.DownArrow) && !Ladder.isClimbing && !Ladder.isBottomDetectorActive) && !Input.GetKey(KeyCode.UpArrow))
+        if (grounded && (Input.GetButton("Down") && !Ladder.isClimbing && !Ladder.isBottomDetectorActive) && !Input.GetButton("Up"))
         {
             body.velocity = new Vector2(0, body.velocity.y);
             Crouch();
@@ -197,9 +197,9 @@ public class PlatformerPlayer : MonoBehaviour
             anim.SetFloat("Speed", Mathf.Abs(deltaX));
             body.velocity = new Vector2(Mathf.Clamp(movement.x, -speed, speed), body.velocity.y);
         }
-        if (!Input.GetKey(KeyCode.X)){
+        if (!Input.GetButton("Attack")){
             // Прыжок
-            if (grounded && Input.GetKey(KeyCode.Z) && !isCrouching && !Ladder.isClimbing && !isTurning)
+            if (grounded && Input.GetButton("Jump") && !isCrouching && !Ladder.isClimbing && !isTurning)
             {
                 isJumping = true;
                 anim.SetTrigger("IsJumping");
@@ -232,14 +232,14 @@ public class PlatformerPlayer : MonoBehaviour
 
     void HandleStandUpInput()
     {
-        if (isCrouching && Input.GetKey(KeyCode.UpArrow))
+        if (isCrouching && Input.GetButton("Up"))
         {
             StandUp();
         }
     }
     void Crouch()
     {
-        if (isCrouching || isStandingUp || Input.GetKey(KeyCode.UpArrow)) return;
+        if (isCrouching || isStandingUp || Input.GetButton("Up")) return;
 
         isCrouching = true;
         anim.SetBool("IsCrouching", true);

@@ -52,12 +52,12 @@ public class WallHitHandler : MonoBehaviour
         // Используем Input в Update(), но поскольку физические обновления в FixedUpdate, можно кэшировать ввод
 
         // Одноразовые нажатия
-        pressLeftKeyDown = Input.GetKeyDown(KeyCode.LeftArrow);
-        pressRightKeyDown = Input.GetKeyDown(KeyCode.RightArrow);
+        pressLeftKeyDown = Input.GetButtonDown("Left");
+        pressRightKeyDown = Input.GetButtonDown("Right");
 
         // Удержание кнопок
-        holdLeftKey = Input.GetKey(KeyCode.LeftArrow);
-        holdRightKey = Input.GetKey(KeyCode.RightArrow);
+        holdLeftKey = Input.GetButton("Left");
+        holdRightKey = Input.GetButton("Right");
 
         // ========= 2) Обработка Сброса Прыжка =========
         if (player.IsGrounded() && player.isJumping && jumpWallHitUsed)

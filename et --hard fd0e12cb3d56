@@ -1,0 +1,173 @@
+[33mcommit 94f72c0311d517ead047e3125ffeffce7217fcf2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Jan 9 11:39:12 2025 +1000
+
+    Bug Fixies
+
+[33mcommit fd0e12cb3d56e03f0434bf58ea9ca94ab42a76ab[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Jan 7 22:45:20 2025 +1000
+
+    Improvement Gameplay
+
+[33mcommit 0c2b46da0d66c64d96e75ebd34bf5307b62ba260[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Jan 6 03:48:20 2025 +1000
+
+    Add sound and improvement game design
+
+[33mcommit f82d17520515e419b7293842e2e9ff855e60dbb2[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Sun Jan 5 05:28:33 2025 +1000
+
+    Add Bug,Dragonfly,Key,Potion and Improvement Character
+
+[33mcommit 5f857fb5caf082826d8699620e35ce3ae85b678b[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Jan 2 23:30:24 2025 +1000
+
+    Adding videos and adding Boss
+
+[33mcommit e20170226d2289339831051898bcdad90c73ba02[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Wed Jan 1 19:36:37 2025 +1000
+
+    Improvement CharacterMovement and add Teleportation
+
+[33mcommit cfeffd185e60bdc1fd82989034dd9e918d93a44c[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Sat Dec 28 20:26:17 2024 +1000
+
+    Improve Character Movement and Add FireLadder
+
+[33mcommit 7f326552c37cd711c67809aad90061b6ab9a6df4[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Fri Dec 27 03:40:52 2024 +1000
+
+    Add Axe Enemy and improve the character's movement
+
+[33mcommit faac7c42c0ce72a56afc4408d69c5e2d9729889f[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Dec 24 03:53:49 2024 +1000
+
+    Improvement demon, Сharacter and add Sword Enemy
+
+[33mcommit 3fd6a60880ad3e6809660153553f7942372bae78[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Dec 17 11:30:02 2024 +1000
+
+    Adding Special Attack and purple Demon
+
+[33mcommit e2472121d2f0c0a05f73186fc593dce203c4a4e0[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Fri Dec 13 11:16:43 2024 +1000
+
+    Fix SystemSound and Movement
+
+[33mcommit 3c4851891c19140bd26b5bc6c08633036c4e8c3e[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Dec 12 21:25:03 2024 +1000
+
+    Improvement Sound System
+
+[33mcommit 5869c54d74b8b3f41575930890ee60624640c6e7[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Dec 12 02:51:11 2024 +1000
+
+    Improvement combat system and add Root and drop
+
+[33mcommit 80974bd7c72b4a6997ebd68d434a27dcf87c4b4a[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Wed Dec 11 13:29:19 2024 +1000
+
+    Changing jump attack and death
+
+[33mcommit a94bb5305a722b2bd8920a1b0fcace1d8a3800ff[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Dec 9 20:43:21 2024 +1000
+
+    Update Sprite Sheet
+
+[33mcommit 922226e082a7ed5611cf5e92eb0c86167c82c303[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Dec 9 20:27:00 2024 +1000
+
+    adding Death Animation and Improve UI
+
+[33mcommit 77369d775755c35d28f18a4598057703467baf9a[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Dec 9 11:39:59 2024 +1000
+
+    Improvement CombatSystem, adding Spikes
+
+[33mcommit d17b845c41d62db92bee834569726fa7c324333c[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Dec 9 00:05:32 2024 +1000
+
+    Adding a simple combat system
+
+[33mcommit 3cf154468b28fe8392d9568709299a9ea33654ba[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Dec 2 23:08:45 2024 +1000
+
+    New ladder fix, enemy update and background fix
+
+[33mcommit c56a22ece682554b76524aaa6b1b3f072597ba08[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Sun Dec 1 20:45:12 2024 +1000
+
+    Improved Ladder, ui and add Enemy
+
+[33mcommit 06fda34be14efb2d3344745b4a93b8c2570fd926[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Nov 28 20:51:41 2024 +1000
+
+    Adding an initial UI
+
+[33mcommit 37d5058262bd6f6dc0c4979f1502a02dc42d5b5b[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Thu Nov 28 01:23:56 2024 +1000
+
+    Complete LadderMovement and Camera
+
+[33mcommit 8380602ba28ed9def3b285eb47594249d3b1c12e[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Wed Nov 20 02:58:33 2024 +1000
+
+    Changing the camera and improving movement on stairs
+
+[33mcommit c41c510bf1f64c4ebe243c2164091d191a391524[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Nov 19 01:24:46 2024 +1000
+
+    Add map,change Sprite Sheet,rework mechanic
+
+[33mcommit c5aa2d4376ef40a2b3fd78424863b651a4486f93[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Mon Nov 11 02:06:17 2024 +1000
+
+    [200~оработка механики поворота.
+
+[33mcommit be5765bd8e6ca11b5b239d3a8fa22fc6c2d0df52[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Wed Nov 6 13:57:02 2024 +1000
+
+    Change the animator Control
+
+[33mcommit 0ef884f2b85addb2c692fa8f362b532043f9843d[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Nov 5 23:15:53 2024 +1000
+
+    Приведено в порядок звуковые эффекты
+
+[33mcommit da0e86b4e56543e9a907a24500c0e09a692d4ba9[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Nov 5 23:10:04 2024 +1000
+
+    Расставлены по папкам все скрипты
+
+[33mcommit 1ec6037538e6d60573786496377dc714a4a1c558[m
+Author: Mdevirage <t0e2n5e0seketlno@gmail.com>
+Date:   Tue Nov 5 22:43:50 2024 +1000
+
+    Initial commit

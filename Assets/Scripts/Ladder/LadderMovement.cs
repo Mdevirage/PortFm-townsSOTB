@@ -97,9 +97,9 @@ public class LadderMovement : MonoBehaviour
                 }
             }
 
-            if ((!isTopDetectorActive && isBottomDetectorActive && Input.GetKey(KeyCode.UpArrow))
-                || (isTopDetectorActive && !isBottomDetectorActive && Input.GetKey(KeyCode.DownArrow))
-                || isOverlapLadderActive && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow)))
+            if ((!isTopDetectorActive && isBottomDetectorActive && Input.GetButton("Up"))
+                || (isTopDetectorActive && !isBottomDetectorActive && Input.GetButton("Down"))
+                || isOverlapLadderActive && (Input.GetButton("Right") || Input.GetButton("Left")))
             {
                 StopClimbing();
             }
@@ -107,13 +107,13 @@ public class LadderMovement : MonoBehaviour
         else
         {
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-            if (body.velocity.y == 0 && isTopDetectorActive && (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow)) && Input.GetAxis("Vertical") != 0
-                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
+            if (body.velocity.y == 0 && isTopDetectorActive && (Input.GetButton("Up") && !Input.GetButton("Down")) && Input.GetAxis("Vertical") != 0
+                && !Input.GetButton("Jump") && !Input.GetButton("Attack") && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
             {
                 StartClimbing(true); // Начинаем подъем
             }
-            else if (body.velocity.y == 0 && isBottomDetectorActive && (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) && Input.GetAxis("Vertical") != 0
-                && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.X) && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
+            else if (body.velocity.y == 0 && isBottomDetectorActive && (Input.GetButton("Down") && !Input.GetButton("Up")) && Input.GetAxis("Vertical") != 0
+                && !Input.GetButton("Jump") && !Input.GetButton("Attack") && !stateInfo.IsName("Aarbron_AttackCrounchRev") && !stateInfo.IsName("Aarbron_AttackStandRev"))
             {
                 StartClimbing(false); // Начинаем спуск
             }

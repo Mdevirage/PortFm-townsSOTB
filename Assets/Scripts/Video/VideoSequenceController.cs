@@ -11,7 +11,7 @@ public class VideoSequenceController : MonoBehaviour
     public Sprite imageToShow; // Картинка, которая будет отображаться после видео
     public float imageDisplayDuration = 3f; // Время отображения картинки
     public float fadeDuration = 1f; // Время для плавного появления
-
+    public GameObject VideoCube;
     private int currentVideoIndex = 0; // Текущий индекс видео
     private bool isSkipping = false;  // Флаг пропуска видео
     private bool isImageDisplaying = false; // Флаг отображения изображения
@@ -20,7 +20,7 @@ public class VideoSequenceController : MonoBehaviour
     {
         videoPlayers = GetComponents<VideoPlayer>();
         //Screen.SetResolution(1280, 960, false);
-        Screen.SetResolution(640, 480, false);
+        //Screen.SetResolution(640, 480, false);
 
         if (videoPlayers.Length < 2)
         {
@@ -41,7 +41,7 @@ public class VideoSequenceController : MonoBehaviour
     void Update()
     {
         // Проверяем, если пользователь нажал клавишу пропуска
-        if (!isImageDisplaying && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))) // Space для пропуска
+        if (!isImageDisplaying && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Attack"))) // Space для пропуска
         {
             SkipCurrentVideo();
         }
@@ -76,6 +76,7 @@ public class VideoSequenceController : MonoBehaviour
         }
         else
         {
+            VideoCube.SetActive(false);
             ShowImage();
         }
     }
@@ -123,7 +124,7 @@ public class VideoSequenceController : MonoBehaviour
     void TransitionToNextScene()
     {
         //Screen.SetResolution(1024, 880, false);
-        Screen.SetResolution(512, 440, false);
+        //Screen.SetResolution(512, 440, false);
         SceneManager.LoadScene(nextSceneName);
     }
 }
