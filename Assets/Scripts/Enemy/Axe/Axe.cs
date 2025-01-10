@@ -13,7 +13,7 @@ public class Axe : MonoBehaviour
     private float lastAttackTime;
 
     [Header("Death Settings")]
-    public GameObject deathEffect;        // —юда перетащите эффект (Prefab) взрыва/частиц
+    public GameObject deathEffect;// —юда перетащите эффект (Prefab) взрыва/частиц
 
     [Header("Detection Settings")]
     public float detectionRadius = 5f;

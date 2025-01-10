@@ -17,6 +17,14 @@ public class VideoDeathController : MonoBehaviour
         Death.Play();
     }
 
+    void Update()
+    {
+        // Проверяем, если пользователь нажал клавишу пропуска
+        if ((Input.GetButtonDown("Jump") || Input.GetButtonDown("Attack"))) // Space для пропуска
+        {
+            SceneManager.LoadScene("VideoScene");
+        }
+    }
     void OnDeathVideoEnd(VideoPlayer vp)
     {
         SceneManager.LoadScene("VideoScene");

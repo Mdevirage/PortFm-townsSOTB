@@ -28,8 +28,15 @@ public class ParallaxBackground : MonoBehaviour
     void LateUpdate()
     {
         // ƒвижение фона по горизонтали
+        // ¬ычисл€ем смещение параллакса
         float deltaX = cameraTransform.position.x - lastCameraPosition.x;
-        transform.position += new Vector3(deltaX * parallaxEffectMultiplier, 0, 0);
+        Vector3 newPosition = transform.position - new Vector3(deltaX * parallaxEffectMultiplier, 0, 0);
+
+        // ѕрив€зываем новую позицию к пиксельной сетке
+        newPosition.x = Mathf.Round(newPosition.x * 32) / 32; // ѕрив€зываем к сетке 32 пиксел€ на юнит
+        transform.position = newPosition;
+
+        // ќбновл€ем позицию камеры
         lastCameraPosition = cameraTransform.position;
 
         // ≈сли камера переместилась за пределы правого изображени€, сдвигаем левое изображение вправо
