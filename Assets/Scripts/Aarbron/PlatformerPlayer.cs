@@ -28,6 +28,7 @@ public class PlatformerPlayer : MonoBehaviour
     private HealthManager healthManager;
     public bool isJumping = false;
     public bool isMoveTrigger = false;
+ 
     void Start()
     {
         box = GetComponent<BoxCollider2D>();
@@ -158,7 +159,6 @@ public class PlatformerPlayer : MonoBehaviour
         {
             movement = new Vector2(0, body.velocity.y);
         }
-       
         
         if (grounded)
         {
@@ -174,8 +174,13 @@ public class PlatformerPlayer : MonoBehaviour
             // Триггер анимации прыжка
             anim.SetTrigger("IsJumping");
             isFalling = true;
+            
             // Устанавливаем фиксированную скорость падения
-            float fixedFallSpeed = -15f; // Фиксированная скорость падения
+            float fixedFallSpeed = -12f; // Фиксированная скорость падения
+            Vector3 position = transform.position;
+            position.x = Mathf.Round(position.x * 32) / 32;
+            position.y = Mathf.Round(position.y * 32) / 32;
+            transform.position = position;
             body.velocity = new Vector2(0, fixedFallSpeed);
             EndJump();
         }

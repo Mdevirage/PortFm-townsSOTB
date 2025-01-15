@@ -21,7 +21,7 @@ public class PlayerHitBox : MonoBehaviour
             Axe axe = other.GetComponent<Axe>();
             BossTree bossTree = other.GetComponent<BossTree>();
             Dragonfly dragonfly = other.GetComponent<Dragonfly>();
-
+            Snake snake = other.GetComponent<Snake>();
             // Нанесение урона
             if (bugEnemy != null) bugEnemy.TakeDamage();
             if (sword != null) sword.TakeDamage();
@@ -29,7 +29,7 @@ public class PlayerHitBox : MonoBehaviour
             if (axe != null) axe.TakeDamage();
             if (bossTree != null) bossTree.TakeDamage();
             if (dragonfly != null) dragonfly.TakeDamage();
-
+            if (snake != null) snake.TakeDamage();
             // Опционально: отключение коллайдера после атаки
             // GetComponent<Collider2D>().enabled = false;
         }

@@ -61,12 +61,14 @@ public class SurfaceDetector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ladder")) return;
-
-        // Добавляем поверхность в список, если её ещё нет
-        if (!currentSurfaces.Contains(other))
+        if (other != null)
         {
-            currentSurfaces.Add(other);
-            UpdateActiveSurface();
+            // Добавляем поверхность в список, если её ещё нет
+            if (!currentSurfaces.Contains(other))
+            {
+                currentSurfaces.Add(other);
+                UpdateActiveSurface();
+            }
         }
     }
 

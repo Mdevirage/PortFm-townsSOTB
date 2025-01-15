@@ -11,8 +11,6 @@ public class VideoDeathController : MonoBehaviour
     void Start()
     {
         Death = GetComponent<VideoPlayer>();
-        //Screen.SetResolution(1280, 960, false);
-        Screen.SetResolution(640, 480, false);
         Death.loopPointReached += OnDeathVideoEnd;
         Death.Play();
     }

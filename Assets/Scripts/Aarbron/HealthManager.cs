@@ -138,18 +138,15 @@ public class HealthManager : MonoBehaviour
         Die();
 
     }
-
     public void Die()
     {
         anim.SetTrigger("DeathTrigger");
     }
-
     public void OnDeathAnimationComplete()
     {
         SceneManager.LoadScene("DeathScene"); // Переключение на сцену с видео
         gameObject.SetActive(false);
     }
-
     public void DamageReset()
     {
         combatSystem.ResetAttack();

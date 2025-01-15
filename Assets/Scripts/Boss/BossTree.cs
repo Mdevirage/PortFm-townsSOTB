@@ -21,7 +21,7 @@ public class BossTree : MonoBehaviour
     [Header("Компоненты для анимации смерти")]
     public SpriteRenderer spriteRenderer1;
     public SpriteRenderer spriteRenderer2;
-
+    public CombatSystem combatSystemplayer;
     public void TakeDamage()
     {
         if (isDead)
@@ -41,7 +41,7 @@ public class BossTree : MonoBehaviour
         isDead = true;
         // Запускаем корутину для последовательных взрывов
         StartCoroutine(TriggerDeathEffectsCoroutine());
-
+        combatSystemplayer.canSpecialAttack = false;
         // Отключаем спрайты босса
         spriteRenderer1.enabled = false;
         spriteRenderer2.enabled = false;

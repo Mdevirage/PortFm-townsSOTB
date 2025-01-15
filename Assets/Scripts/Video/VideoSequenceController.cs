@@ -19,8 +19,6 @@ public class VideoSequenceController : MonoBehaviour
     void Start()
     {
         videoPlayers = GetComponents<VideoPlayer>();
-        //Screen.SetResolution(1280, 960, false);
-        //Screen.SetResolution(640, 480, false);
 
         if (videoPlayers.Length < 2)
         {
@@ -123,8 +121,6 @@ public class VideoSequenceController : MonoBehaviour
 
     void TransitionToNextScene()
     {
-        //Screen.SetResolution(1024, 880, false);
-        //Screen.SetResolution(512, 440, false);
         SceneManager.LoadScene(nextSceneName);
     }
 }
