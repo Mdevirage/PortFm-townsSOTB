@@ -11,6 +11,11 @@ public class VideoDeathController : MonoBehaviour
     void Start()
     {
         Death = GetComponent<VideoPlayer>();
+        string videoPath;
+        // Для WebGL используем относительный путь
+        videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, $"Death.mp4");
+        Death.url = videoPath;
+
         Death.loopPointReached += OnDeathVideoEnd;
         Death.Play();
     }

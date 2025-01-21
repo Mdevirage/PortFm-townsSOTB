@@ -25,6 +25,14 @@ public class VideoSequenceController : MonoBehaviour
             Debug.LogError("На объекте должно быть как минимум два компонента VideoPlayer!");
             return;
         }
+        string videoPath1;
+        string videoPath2;
+        // Для WebGL используем относительный путь
+        videoPath1 = System.IO.Path.Combine(Application.streamingAssetsPath, $"Intro.mp4");
+        // Для других платформ путь из StreamingAssets
+        videoPath2 = System.IO.Path.Combine(Application.streamingAssetsPath, $"tree.mp4");
+        videoPlayers[0].url = videoPath1;
+        videoPlayers[1].url = videoPath2;
 
         if (displayCanvasGroup != null)
         {
